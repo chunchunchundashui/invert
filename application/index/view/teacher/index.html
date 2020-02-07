@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="__index__/css/check.css" />
+    <link rel="stylesheet" href="__index__/css/min.ui.css" />
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <div class="bg"></div>
+        <h3>{$list['personnel']['name']}调查问卷</h3>
+        {if condition="$list['personnel']['id'] eq 1 "}
+        <p class="title2">班级:{$list['local_name']['name']}:{$list['class_name']['tname']}</p>
+        {else /}
+        <p class="title2">班级:{$list['local_name']['name']}:{$list['teacher_name']['tname']}</p>
+        {/if}
+        <h6>您好:</h6>
+        <p class="descrip">
+            欢迎参加学生满意度调查工作!
+            此次调查是本校为了学生拥有更好的在校生活而专门设计的
+            希望你抽出一点时间积极配合我们的调查工作,谢谢你的参与
+        </p>
+        <h6>说明:</h6>
+        <p class="descrip">
+            本次调查采用匿名形式,我们将严格保密你的信息
+        </p>
+    </header>
+    <div class="content">
+        <form action="">
+            <div class="classify">
+                <!-- offset="0" length='20' 限定循坏出来的数据-->
+                {volist name="topic" id="vo" offset="0" length='20'}
+                <h4 class="title" style="color: black">{$vo.topic}</h4>
+                <div class="question-box">
+                    <!--1为学生,2为老师-->
+                    <p class="question"></p>
+                    <p class="question"></p>
+                    <div
+                        class="mui-numbox"
+                        data-numbox-step="10"
+                        data-numbox-min="0"
+                        data-numbox-max="100"
+                    >
+                        <button class="mui-btn mui-numbox-btn-minus" type="button">
+                            -
+                        </button>
+                        <input class="mui-numbox-input" name="achievement[{$vo['id']}]" type="number" />
+                        <button class="mui-btn mui-numbox-btn-plus" type="button">
+                            +
+                        </button>
+                    </div>
+                </div>
+                {/volist}
+                <div class="question-box">
+                    <p class="question">其他意见</p>
+                    <textarea
+                        style="resize:none"
+                        name="intro"
+                        id=""
+                        cols="1"
+                        rows="4"
+                    ></textarea>
+                </div>
+            </div>
+            <input type="submit" id="login" style="margin-left:150px; margin-bottom: 20px;" value="提交">
+        </form>
+    </div>
+
+</div>
+<script src="__index__/js/jquery-3.4.1.js"></script>
+<script src="__index__/js/min.ui.js"></script>
+<script src="__admin__/style/jquery.js"></script>
+<script src="__admin__/style/jquery_002.js"></script>
+
+<script>
+  $('#login').click(function () {
+    $.ajax({
+      url:"{:url('index/comp/add')}",
+      type:'post',
+      data:$('form').serialize(),
+      dataType:'json',
+      success: function (data) {
+        console.log(data);return false;
+      }
+    });
+    return false;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>调查系统</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__admin__/style/bootstrap.css" rel="stylesheet">
+    <link href="__admin__/style/font-awesome.css" rel="stylesheet">
+    <link href="__admin__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__admin__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__admin__/style/demo.css" rel="stylesheet">
+    <link href="__admin__/style/typicons.css" rel="stylesheet">
+    <link href="__admin__/style/animate.css" rel="stylesheet">
+    
+</head>
+<body>
+	<!-- 头部 -->
+	<div class="navbar">
+    {include file="public/head" /}
+</div>
+
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="public/left" /}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                                        <li>
+                        <a href="{:url('teacher/lst')}">老师管理</a>
+                    </li>
+                                        <li class="active">添加老师</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption">新增老师</span>
+            </div>
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form class="form-horizontal" role="form" action="" method="post">
+                        <div class="form-group">
+                            <label  class="col-sm-2 control-label no-padding-right" >老师名称</label>
+                            <div class="col-sm-6">
+                                <input class="form-control"  name="tname" required="" placeholder="请输入名称" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"><span class="c-red">*</span>职位</label>
+                            <div  class="col-sm-6">
+                                {volist name="teacher" id="vo"}
+                                <div class="radio col-lg-4 col-sm-4 col-xs-4">
+                                    <label>
+                                        <input name="main_id" type="radio" value="{$vo.id}" >
+                                        <span class="text">{$vo.mname}:</span>
+                                    </label>
+                                </div>
+                                {/volist}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cateid" class="col-sm-2 control-label no-padding-right">部门</label>
+                            <div class="col-sm-6">
+                                <select id="cateid" name="position_id" class="form-control">
+                                    <option value="">----请选择----</option>
+                                    {volist name="position" id="vo"}
+                                    <option value="{$vo.id}">{$vo.pname}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" id="addBtn" class="btn btn-default">保存信息</button>
+                                <button type="button" id="back" class="btn btn-default">返回列表</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>	
+	</div>
+
+	    <!--Basic Scripts-->
+    {include file="public/js" /}
+    <script>
+        $(function () {
+            $('#addBtn').click(function () {
+                $.ajax({
+                    url: "{:url('teacher/add')}",
+                    type:'post',
+                    data:$('form').serialize(),
+                    dataType:'json',
+                    success:function (data) {
+                        if (data.code == 1) {
+                            $(this).parent().parent().add();
+                            layer.msg(data.msg, {
+                                icon:6,
+                                time:1000
+                            }, function () {
+                                location.href = data.url;
+                            });
+                        }else {
+                            layer.open({
+                                title:'老师添加失败!',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            });
+                        }
+                    }
+                });
+                return false;
+            })
+        });
+
+        $('#back').click(function () {
+            window.history.go(-1);
+            // alert(132);return false;
+        });
+    </script>
+
+
+</body></html>

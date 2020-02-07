@@ -1,0 +1,82 @@
+
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="navbar-container">
+            <!-- Navbar Barnd -->
+            <div class="navbar-header pull-left">
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <img src="__admin__/images/logo.png" alt="">
+                    </small>
+                </a>
+            </div>
+            <!-- /Navbar Barnd -->
+            <!-- Sidebar Collapse -->
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="collapse-icon fa fa-bars"></i>
+            </div>
+            <!-- /Sidebar Collapse -->
+            <!-- Account Area and Settings -->
+            <div class="navbar-header pull-right">
+                <div class="navbar-account">
+                    <ul class="account-area" style="margin-right: 100px">
+                        <li>
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                <div class="avatar" style="width: 68px; font-size: 20px; color: white;" title="View your public profile">
+                                    用户名:
+                                </div>
+                                {if session('admin.id')}
+                                <section>
+                                    <h2><span class="profile" style="padding-top: 2px"><span>{:session('admin.name')}</span></span></h2>
+
+                                </section>
+                                {/if}
+                            </a>
+                        <li class="dropdown-footer">
+                            <a href="javascript:void(0)"style="color:white; padding-top: 13px" id="outLogin">
+                                退出登录
+                            </a>
+                        </li>
+                            <!--Login Area Dropdown-->
+                        <!-- /Account Area -->
+                        <!--Note: notice that setting div must start right after account area list.
+                            no space must be between these elements-->
+                        <!-- Settings -->
+                    </ul>
+                </div>
+            </div>
+            <!-- /Account Area and Settings -->
+        </div>
+    </div>
+
+</div>
+{include file="public/js" /}
+<script>
+    $(function () {
+        $('#outLogin').click(function () {
+            $.ajax({
+                url: "{:url('index/outLogin')}",
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg ,{
+                            icon:6,
+                            time:1000
+                        }, function () {
+                            location.href = data.url;
+                        });
+                    }else {
+                        layer.open({
+                            title:'退出!',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>

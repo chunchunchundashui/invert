@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <title>调查系统</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__admin__/style/bootstrap.css" rel="stylesheet">
+    <link href="__admin__/style/font-awesome.css" rel="stylesheet">
+    <link href="__admin__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__admin__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__admin__/style/demo.css" rel="stylesheet">
+    <link href="__admin__/style/typicons.css" rel="stylesheet">
+    <link href="__admin__/style/animate.css" rel="stylesheet">
+
+</head>
+<body>
+<!-- 头部 -->
+<div class="navbar">
+    {include file="public/head" /}
+</div>
+
+<!-- /头部 -->
+
+<div class="main-container container-fluid">
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        {include file="public/left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                    <li>
+                        <a href="{:url('user/lst')}">用户管理</a>
+                    </li>
+                    <li class="active">用户职位</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+
+            <!-- Page Body -->
+            <div class="page-body">
+
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-blue">
+                                <span class="widget-caption">新增用户</span>
+                            </div>
+                            <div class="widget-body">
+                                <div id="horizontal-form">
+                                    <form class="form-horizontal" role="form" action="" method="post">
+                                        <input type="hidden" name="id" value="{$user.id}">
+                                        <div class="form-group">
+                                            <label  class="col-sm-2 control-label no-padding-right">用户名称</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control"  name="name" value="{$user.name}" required="" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label  class="col-sm-2 control-label no-padding-right">原密码</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control"  id="pwd" placeholder="请输入密码" value="" name="pwd" required="" type="password">
+                                                <!--  密码小眼睛  -->
+                                                <i style="position: relative; left: 764px; bottom: 26px" class="fa fa-eye"  onclick="showStart1()" id="eye"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label  class="col-sm-2 control-label no-padding-right">新密码</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control"  id="pwds" placeholder="请输入密码" value="" name="pwds" required="" type="password">
+                                                <!--  密码小眼睛  -->
+                                                <i style="position: relative; left: 764px; bottom: 26px" class="fa fa-eye"  onclick="showStart()" id="eyes"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label  class="col-sm-2 control-label no-padding-right">确定新密码</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control"  id="newpws" placeholder="请输入确定新密码" value="" name="newpws" required="" type="password">
+                                                <!--  密码小眼睛  -->
+                                                <i style="position: relative; left: 764px; bottom: 26px" class="fa fa-eye"  onclick="showStart2()" id="neweye"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status" class="col-sm-2 control-label no-padding-right">状态</label>
+                                            <div class="col-sm-6">
+                                                <div class="radio" style="float:left; padding-right: 10px;">
+                                                    <label>
+                                                        <input type="radio" id="status" name="status" value="1"  {if condition="$user['status'] eq 1"} checked="checked" {/if}  class="colored-blue">
+                                                        <span class="text">显示</span>
+                                                    </label>
+                                                </div>
+                                                <div class="radio" style="float:left;">
+                                                    <label>
+                                                        <input type="radio" name="status" value="0" {if condition="$user['status'] eq 0"}checked="checked" {/if} class="colored-blue">
+                                                        <span class="text">隐藏</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" id="addEdit" class="btn btn-default">保存信息</button>
+                                                <button type="button" id="back" class="btn btn-default">返回列表</button>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+</div>
+
+<!--Basic Scripts-->
+{include file="public/js" /}
+<script>
+    $(function () {
+        $('#addEdit').click(function () {
+            $.ajax({
+                url: "{:url('user/edit')}",
+                type:'post',
+                data:$('form').serialize(),
+                dataType:'json',
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon:6,
+                            time:1000
+                        }, function () {
+                            location.href = data.url;
+                        });
+                    }else {
+                        layer.open({
+                            title:'用户方式!',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        });
+                    }
+                }
+            });
+            return false;
+        })
+    });
+
+    //密码小眼睛
+    function showStart1()  {
+
+        if (pwd.type == "password") {
+            pwd.type = "text";
+            eye.className='fa fa-eye-slash'
+        }else {
+            pwd.type = "password";
+            eye.className='fa fa-eye'
+        }
+    }
+
+    //密码小眼睛
+    function showStart()  {
+
+        if (pwds.type == "password") {
+            pwds.type = "text";
+            eyes.className='fa fa-eye-slash'
+        }else {
+            pwds.type = "password";
+            eyes.className='fa fa-eye'
+        }
+    }
+    //密码小眼睛
+    function showStart2()  {
+
+        if (newpws.type == "password") {
+            newpws.type = "text";
+            neweye.className='fa fa-eye-slash'
+        }else {
+            newpws.type = "password";
+            neweye.className='fa fa-eye'
+        }
+    }
+    //js退回一个页面
+    $('#back').click(function () {
+        window.history.go(-1);
+        // alert(132);return false;
+    });
+</script>
+
+
+</body></html>
