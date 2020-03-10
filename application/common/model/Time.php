@@ -21,12 +21,14 @@ class Time  extends Controller
             ->field("from_unixtime(time,'%Y-%m') as 'time'")
             ->group('time')
             ->select();
-        if ($list ==null){
+
+      if ($list ==null){
             //如果数据库中不存在相关数据的话就返回空
             return '';
         }
         foreach($list as $v) $res[$v['time']] = $v;
-        return $res;
+
+      return $res;
     }
     public function Timedel($time)
     {

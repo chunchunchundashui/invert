@@ -19,7 +19,8 @@ class Time extends Controller
         if (request()->isGet()) {
             $personnel_id = input('id');
             $time = model('time')->indexlist($personnel_id);
-            $this->assign([
+
+          $this->assign([
                 'personnel_id'=>$personnel_id,
                 'time'=>$time
             ]);

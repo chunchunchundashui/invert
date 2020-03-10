@@ -74,7 +74,7 @@ class User extends Base
                     'name' => $result['name'],
                 ];
 //            dump($sessionData);die;
-                session('admin', $sessionData);
+                session('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', $sessionData);
                 return 1;
             }
             return "此账户被禁用了!";

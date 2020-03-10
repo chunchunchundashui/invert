@@ -22,7 +22,7 @@
                 <!--  密码小眼睛  -->
                 <i style="left: 764px; bottom: 26px;color: black;" class="fa fa-eye"  onclick="showStart1()" id="eye"></i>
             </div>
-            <div><span>验证码： </span><input type="text" name="verifyCode"  placeholder="请输入验证码"  required/></div>
+            <div><span>验证码： </span><input type="text" name="verifyCode" id="verifyCode"  placeholder="请输入验证码" /></div>
             <div>
                     <span class="input-group-addon"><img src="{:url('Login/verify')}" id="vcode" alt="captcha" style="width: 215px;height: 66px;margin-left: 88px;" onClick="this.src='{:url(\'Login/verify\')}?' + 'rand=' + Math.random()"></span>
             </div>
@@ -58,11 +58,15 @@
                             location.href = data.url;
                         });
                     } else {
-                        layer.open({
+                      var test = document.getElementById('verifyCode');     //输入错误信息清空值
+                      test.value = '';
+                      var test1 = document.getElementById('pwd');    //输入错误信息清空值
+                      test1.value = '';
+                      layer.open({
                             title:"登陆失败!",
                             content:data.msg,
                             icon:5,
-                            anim:6
+                            anim:6,
                         });
                         refresh();
                     }
@@ -82,6 +86,8 @@
             eye.className='fa fa-eye'
         }
     }
+
+
 </script>
 </body>
 </html>

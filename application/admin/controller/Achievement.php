@@ -37,8 +37,10 @@ class Achievement extends Controller
     public function teacher(){
         if (request()->isGet()){
             $data = input();
+//            dump($data);die;
             $list = model('achievement')->indexlist($data);
-            $this->assign([
+
+          $this->assign([
                 'data'=>$data,
                 'list'=>$list
             ]);

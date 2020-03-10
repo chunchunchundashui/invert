@@ -9,7 +9,7 @@ class Login extends Controller
     //重复登录过滤
     public function _initialize()
     {
-        if (session('?admin.id')) {
+        if (session('?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.id')) {
             $this->redirect('admin/index/index');
         }
     }

@@ -17,7 +17,7 @@ class Index extends Base
     public function outLogin()
     {
         session(null);
-        if (session('?admin.id')) {
+        if (session('?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.id')) {
             $this->error('退出失败!');
         }else {
             $this->success('退出成功','admin/login/index');

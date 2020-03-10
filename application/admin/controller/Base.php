@@ -18,7 +18,7 @@ class Base extends Controller
     public function _initialize()
     {
         $this->model=model($this->Controller);
-        if (!session('?admin.id')) {
+        if (!session('?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.id')) {
             $this->redirect('login/index');
         }
     }

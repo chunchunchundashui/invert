@@ -26,7 +26,8 @@ class Achievement extends Model
             ->select();
         $tree = new Catetree();
         $lists = $tree->indexlist($list);
-        return $lists;
+
+      return $lists;
     }
     //查询出当用户点击某一时间断是返回这一时间段学生调查的结果
     public function Timequery($time){
@@ -65,13 +66,13 @@ class Achievement extends Model
             ->alias('t')
             ->where(['t.local_id'=>$id['local_id'],'t.personnel_id'=>$id['personnel_id']])
             ->where("from_unixtime(t.time,'%Y-%m')='{$id['time']}'")
-            ->field('t.achievement,t.topic_id,to.topic,te.create_time,lo.lname,te.tname,t.browse')
+            ->field('t.achievement,t.topic_id,to.topic,te.create_time,lo.name,te.tname,t.browse')
             ->join('teacher te','t.teacher_id = te.id')
             ->join('topic to','t.topic_id = to.id')
             ->join('local lo','t.local_id = lo.id')
             ->select();
         //->paginate(2);
-        $tree = new Catetree();
+      $tree = new Catetree();
         $lists = $tree->sortlist($list);
         return $lists;
     }
@@ -88,7 +89,9 @@ class Achievement extends Model
             ->join('local lo','t.local_id = lo.id')
             ->join('manag ma','t.topic_id = ma.id')
             ->select();
-        $tree = new Catetree();
+//      dump(Db::table('tanswer')->getLastSql());die;
+
+      $tree = new Catetree();
         $list = $tree->CateCompany($data);
         return $list;
     }
