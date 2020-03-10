@@ -20,7 +20,6 @@ class Comment extends Base
             ->where($data)
             ->group('ccreate_time')//create_time
             ->select();
-
         return $result;
     }
 
@@ -35,7 +34,8 @@ class Comment extends Base
             ->join('teacher b', 'a.teacher_id = b.id')
             ->join('local c', 'a.local_id = c.id')
             ->join('personnel d', 'a.personnel_id = d.id')
-            ->paginate(15);
+          ->group('a.teacher_id')
+          ->select();
         return $data;
     }
 
@@ -45,11 +45,12 @@ class Comment extends Base
         $data = db('comment')
             ->alias('a')
             ->field('a.comment')
-            ->where("from_unixtime(create_time, '%Y-%m') = '{$data['create_time']}'")
+            ->where("from_unixtime(a.create_time, '%Y-%m') = '{$data['create_time']}'")
             ->where('local_id', $data['local_id'])
             ->where('personnel_id',$data['personnel_id'])
-            ->group('comment')
+            ->group('a.comment')
             ->paginate(15);
+//        dump(db('comment')->getLastSql());die;
         return $data;
     }
 

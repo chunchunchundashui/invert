@@ -87,7 +87,11 @@
                                                 <i class="fa fa-edit"></i> 属性
                                             </a>
                                           <button type="button" id="back" class="btn btn-sm btn-primary" style=" margin-left: 8px">返回上一级</button>
-
+                                          <a href="{:url('Teacher/expData', array('local_id'=>$vo['lid']))}">
+                                            <button type="button" class="btn btn-sm btn-active" >
+                                              <i class="fa fa-download"></i>导出信息
+                                            </button>
+                                          </a>
                                         </td>
                                   </tr>
                         {/volist}

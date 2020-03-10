@@ -62,7 +62,8 @@ class Achievement extends Model
     }
     public function Summation($id){
         //老师表
-        $list =Db::table('tanswer')
+
+      $list =Db::table('tanswer')
             ->alias('t')
             ->where(['t.local_id'=>$id['local_id'],'t.personnel_id'=>$id['personnel_id']])
             ->where("from_unixtime(t.time,'%Y-%m')='{$id['time']}'")
@@ -72,6 +73,7 @@ class Achievement extends Model
             ->join('local lo','t.local_id = lo.id')
             ->select();
         //->paginate(2);
+
       $tree = new Catetree();
         $lists = $tree->sortlist($list);
         return $lists;

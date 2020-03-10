@@ -73,7 +73,7 @@
                                             <td align="center">{$vo.pname}</td>
                                             <td align="center">{:date('Y-m-d',$vo['create_time'])}</td>
                                             <td align="center">
-                                                <a href="{:url('comment/classLst', array('local_id'=>$vo['local_id'], 'create_time'=>$time, 'personnel_id'=>$vo['personnel_id']))}" id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                <a href="{:url('comment/classLst', array('local_id'=>$vo['local_id'], 'tname'=>$vo['tname'], 'lname'=>$vo['lname'], 'create_time'=>$time, 'personnel_id'=>$vo['personnel_id']))}" id="mainEdit" class="btn btn-primary btn-sm shiny">
                                                     <i class="fa fa-edit"></i> 班级评论
                                                 </a>
                                             </td>
@@ -84,7 +84,6 @@
                                 </div>
                                 <div style="padding-top: 10px; text-align: right;">
                                     <!--分页-->
-                                    {$teacherLst->render()}
                                 </div>
                                 <div>
                                 </div>

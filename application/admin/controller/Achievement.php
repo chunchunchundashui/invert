@@ -61,8 +61,10 @@ class Achievement extends Controller
     public function sort(){
         if (request()->isGet()){
             $id = input();
-            $list = model('achievement')->Summation($id);
-            $this->assign([
+          $list = model('achievement')->Summation($id);
+
+          $this->assign([
+                'id' => $id,
                 'list'=>$list
             ]);
             return $this->fetch('achievement/copic');

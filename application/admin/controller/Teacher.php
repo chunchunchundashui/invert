@@ -82,6 +82,9 @@ class Teacher extends Base
         return view();
     }
 
-
+//导出题
+  public function expData(){
+    action('admin/Download/out',['table_name'=>'em_students']);
+  }
 
 }
