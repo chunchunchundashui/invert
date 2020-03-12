@@ -7,6 +7,8 @@
  */
 namespace app\common\model;
 
+use think\Cookie;
+
 class User extends Base
 {
     //职位添加
@@ -74,8 +76,11 @@ class User extends Base
                     'name' => $result['name'],
                 ];
 //            dump($sessionData);die;
+//                $session_id = session_id();
                 session('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', $sessionData);
-                return 1;
+//                Cookie::set('PHPSESSID', $session_id);
+
+              return 1;
             }
             return "此账户被禁用了!";
         }else{

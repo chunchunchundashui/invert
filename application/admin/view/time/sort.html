@@ -53,9 +53,10 @@
                                         </ul>
                 </div>
                 <!-- /Page Breadcrumb -->
-
                 <!-- Page Body -->
-<div class="row">
+              <button type="button" id="back" class="btn btn-sm btn-primary" style=" margin-left: 8px; margin-top: 20px;">返回上一级</button>
+
+              <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12">
         <div class="widget">
             <div class="widget-body" style="margin-top: 20px;">
@@ -86,8 +87,8 @@
                                             <a href="{:url('admin/achievement/sort',array('local_id'=>$vo['lid'],'personnel_id'=>$data['personnel_id'],'time'=>$data['time']))}" class="btn btn-primary btn-sm shiny">
                                                 <i class="fa fa-edit"></i> 属性
                                             </a>
-                                          <button type="button" id="back" class="btn btn-sm btn-primary" style=" margin-left: 8px">返回上一级</button>
-                                          <a href="{:url('Teacher/expData', array('local_id'=>$vo['lid']))}">
+
+                                          <a href="{:url('Teacher/expData', array('lid'=>$vo['lid'], 'teacher'=>$vo['name'], 'local'=>$vo['local']))}">
                                             <button type="button" class="btn btn-sm btn-active" >
                                               <i class="fa fa-download"></i>导出信息
                                             </button>

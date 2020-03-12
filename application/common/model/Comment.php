@@ -42,15 +42,15 @@ class Comment extends Base
     //每个班对应每个老师评论区
     public function classLst($data)
     {
-        $data = db('comment')
+      $data = db('comment')
             ->alias('a')
             ->field('a.comment')
             ->where("from_unixtime(a.create_time, '%Y-%m') = '{$data['create_time']}'")
             ->where('local_id', $data['local_id'])
+            ->where('teacher_id', $data['teacher_id'])
             ->where('personnel_id',$data['personnel_id'])
             ->group('a.comment')
             ->paginate(15);
-//        dump(db('comment')->getLastSql());die;
         return $data;
     }
 

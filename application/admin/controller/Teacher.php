@@ -84,7 +84,8 @@ class Teacher extends Base
 
 //导出题
   public function expData(){
-    action('admin/Download/out',['table_name'=>'em_students']);
+      $class = input();
+    action('admin/Download/out',['class'=>$class,'table_name'=>'tanswer']);
   }
 
 }
