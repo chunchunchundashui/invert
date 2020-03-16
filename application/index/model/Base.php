@@ -9,6 +9,8 @@
 namespace app\index\model;
 use think\Db;
 use think\Model;
+use think\Session;
+
 class Base extends Model{
     /* protected $autoWriteTimestamp = true;*/   // 自动写入时间戳字段'auto_timestamp'  => false,
     protected function _initialize(){
@@ -25,40 +27,35 @@ class Base extends Model{
 //    评论
     public function introAdd($session,$data)
     {
-      $session['status'] = 1;
-      if($data['intro']) { //$k为题目id   $v为$k对应的成绩
+        $session['status'] = 1;
         $session['create_time'] = time();
-        $session['comment'] = $data['intro'];
-        if ($session['personnel_id'] == 1){
+        $session['comment'] = $data;
+        if ($session['personnel_id'] == 1) {
+          $session['teacher_id'] = $session['teacher_class'];
+          unset($session['teacher_class']);
           $session['comment'] = implode(',',$session['comment']);
-        }else {
-          $this->CompAdd($session,$data);
         }
+        unset($session['teacher_class']);
         $ret = Db::name('comment')->insert($session);
-      }
-      return $ret;
+//        dump(Db::name('comment')->getLastSql());die;
+        return $ret;
     }
 
     //老师成绩添加
     public function CompAdd($session,$data){
-      if ($session['personnel_id'] == 2) {
-        unset($session['create_time']);
-        unset($session['status']);
-        unset($session['comment']);
-      }
       $session['status'] = 1;
-      foreach ($data['achievement'] as $k=>$v){ //$k为题目id   $v为$k对应的成绩
+
+      foreach ($data as $k=>$v){ //$k为题目id   $v为$k对应的成绩
+          $data = array();
         $session['achievement'] = $v;
             $session['topic_id'] = $k;
-            $session['browse'] =1;
-            $session['time'] =time();
-
+            $session['browse'] = 1;
+            $session['time'] = time();
             //问题任课老师第一次上交分数,在数据库中为20分,
-        $ret = Db::name('tanswer')->insert($session);
-        dump(Db::name('tanswer')->getLastSql());die;
+          $data = Db::name('tanswer')->insert($session);
 
       }
-        return $ret;
+        return $data;
     }
     //第一代成绩修改及浏览量增加
     /* public function CompEdit($session,$data){

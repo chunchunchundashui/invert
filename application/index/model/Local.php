@@ -17,7 +17,7 @@ class Local extends Base {
         $data1 = '';
         $order = ['id'=>'desc'];
         $paginate_val = [];
-        //Ìí¼Ó°à¼‰Ä£ºı²éÔƒ
+        //ï¿½ï¿½Ó°à¼‰Ä£ï¿½ï¿½ï¿½ï¿½Ôƒ
         if(!empty($date['local_name'])){
             //$data2 = ['l.name'=>$local_name];
             $data2 = " l.name like '%{$date['local_name']}%'";
@@ -38,21 +38,21 @@ class Local extends Base {
         $teacher =  $data['teacher'];
         unset($data['name']);
         $local = $this->where(['name'=>$local_name])->find();
-        if($local){    //Èç¹û²éÑ¯³öÓĞÖµ,Ö¤Ã÷ÒÑ¾­Ìí¼Ó
+        if($local){    //ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½Öµ,Ö¤ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½
             $local_teacher_select = [
                 'local_id'=>$local->id,
                 'teacher_id'=>$data['teacher']
             ];
             $local_teacher = $this->table('local_teacher')->where($local_teacher_select)->select();
 
-            if(!$local_teacher){   //ÅĞ¶ÏÖĞ¼ä±íÊÇ·ñ´æÔÚ,Èç¹û²»´æÔÚÔòÌí¼Ó
+            if(!$local_teacher){   //ï¿½Ğ¶ï¿½ï¿½Ğ¼ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 $result = Db::table('local_teacher')->insert($local_teacher_select);
                 return json_encode(true);
             }else{
                return json_encode(false);
             }
 
-        }else{   //Èç¹ûÃ»ÓĞÔòÌí¼Ó
+        }else{   //ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             $localAdd = $this->BaseByAdd_id(['name'=>$local_name,'id'=>$id]);
 
             $local = $this->where(['name'=>$local_name])->find();
@@ -77,51 +77,51 @@ class Local extends Base {
 
     }*/
     /*
-     * ĞŞ¸Ä°à¼¶Êı¾İ
+     * ï¿½Ş¸Ä°à¼¶ï¿½ï¿½ï¿½ï¿½
      */
     public function LocalByTeacherByAdd($data){
 
-        //array(4) { ["id"]=> string(0) "" ["local_teacher_id"]=> string(0) "" ["name"]=> string(6) "°¢´ï" ["teacher"]=> string(1) "3" }
-        //ÅĞ¶ÏĞÂÔöºÍĞŞ¸ÄµÄ°à¼¶ÊÇ·ñÒÑ¾­´æÔÚ,Èç¹û´æÔÚÔòÖ±½Ó·µ»Ø
-        if(empty($data['id'])){  //Èç¹ûidÎª¿Õ,ÔòÎªÌí¼ÓÊı¾İ
+        //array(4) { ["id"]=> string(0) "" ["local_teacher_id"]=> string(0) "" ["name"]=> string(6) "ï¿½ï¿½ï¿½ï¿½" ["teacher"]=> string(1) "3" }
+        //ï¿½Ğ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ÄµÄ°à¼¶ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó·ï¿½ï¿½ï¿½
+        if(empty($data['id'])){  //ï¿½ï¿½ï¿½idÎªï¿½ï¿½,ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             $local = $this->where(['name'=>$data['name']])->find();
-            if($local)  return json_encode(false);  //Èç¹ûÓĞÖµÖ±½Ó·µ»Ø,ÌáÊ¾ÒÑ¾­Ìí¼Ó
+            if($local)  return json_encode(false);  //ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÖ±ï¿½Ó·ï¿½ï¿½ï¿½,ï¿½ï¿½Ê¾ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½
             Db::startTrans();
             try{
                 $result1 = $this->BaseByAdd_id(['name'=>$data['name'],'id'=>$data['id']]);
                 $local_teacher_data = ['local_id'=>$result1['userId'], 'teacher_id'=>$data['teacher']];
                 $result2 = Db::table('local_teacher')->insert($local_teacher_data);
-                // Ìá½»ÊÂÎñ
+                // ï¿½á½»ï¿½ï¿½ï¿½ï¿½
                 Db::commit();
                 return json_encode(true);
             } catch (\Exception $e) {
-                // »Ø¹öÊÂÎñ
+                // ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½
                 Db::rollback();
                 return json_encode(false);
             }
-        }else{   //ĞŞ¸ÄÊı¾İ
+        }else{   //ï¿½Ş¸ï¿½ï¿½ï¿½ï¿½ï¿½
             //array(4) { ["id"]=> string(2) "58" ["local_teacher_id"]=> string(2) "52" ["name"]=> string(4) "4444" ["teacher"]=> string(1) "2" }
             $local = $this->where(['id'=>$data['id']])->find();
             Db::startTrans();
             try{
-                if($local['name'] != $data['name']){  //ÓÃ»§¸ÄÁË°à¼¶
+                if($local['name'] != $data['name']){  //ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ë°à¼¶
                     $local = $this->where(['name'=>$data['name']])->find();
                     if($local)  return json_encode(false);
                     $result1 = $this->BaseByAdd_id(['name'=>$data['name'],'id'=>$data['id']]);
                 }
                 $result2 = Db::table('local_teacher')->update(['id'=>$data['local_teacher_id'],'teacher_id'=>$data['teacher']]);
-                // Ìá½»ÊÂÎñ
+                // ï¿½á½»ï¿½ï¿½ï¿½ï¿½
                 Db::commit();
                 return json_encode(true);
             } catch (\Exception $e) {
-                // »Ø¹öÊÂÎñ
+                // ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½
                 Db::rollback();
                 return json_encode(false);
             }
         }
     }
     /*
-     * °à¼¶Êı¾İ²éÑ¯
+     * ï¿½à¼¶ï¿½ï¿½ï¿½İ²ï¿½Ñ¯
      */
     public function edit_local($id){
         $sql = "select a.id as local_ida,a.name as local_name,b.id as local_teacher_id,c.id as teacher_idc,c.name as teacher_name from local as a
@@ -132,7 +132,7 @@ class Local extends Base {
         return $result[0];
     }
     /*
-     * Ç°Ì¨²éÑ¯ËùÓĞ°à¼¶
+     * Ç°Ì¨ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½Ğ°à¼¶
      */
     public function BaseByYesAll($where='1=1'){
         $where .= " and status=1";
@@ -142,7 +142,7 @@ class Local extends Base {
         return $this->where($where)->order($order)->select();
     }
     /*
-     * É¾³ı°à¼¶ºÍÖĞ¼ä±íÊı¾İ
+     * É¾ï¿½ï¿½ï¿½à¼¶ï¿½ï¿½ï¿½Ğ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     public function del($data){
         $res1 = Db::table('local')->delete($data['id']);

@@ -18,6 +18,8 @@
             <span>调查方式:</span>
             <select name="pid" id="survey">
               <option value="">--请选择--</option>
+              <!--<?php var_dump($personnel);?>-->
+
               {volist name="personnel" id="vo"}
                 <option value="{$vo.id}">{$vo.pname}</option>
               {/volist}
@@ -83,7 +85,7 @@
             $.ajax({
               url:"{:url('index/comp/index')}",
               type:'post',
-              data: {},
+              data: {pid:pid,lid:lid,tid:tid},
               dataType:'json',
               success: function (data) {
                 location.href= 'index/comp/index';

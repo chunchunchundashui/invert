@@ -49,7 +49,8 @@ class Teacher extends Base
             ->where($data)
             ->select();
         /*->distinct(true) 去掉重复的值*/
-        return $data;
+
+      return $data;
     }
     /*
      * 根据id查询老师的名称

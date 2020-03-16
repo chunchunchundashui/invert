@@ -13,21 +13,23 @@ class TeacherAnswerProposal extends Base
 {
     public function AnswerProposalByAdd($other){
         $session = session('');
-        foreach ($other as $key=>$value){
-            foreach ($value as $k=>$v){
+        if ($session['pid'] == 1) {
+          $session['teacher_id'] = $session['cid'];
+        }else {
+          $session['teacher_id'] = $session['tid'];
+        }
+      foreach ($other as $key=>$value){
                 $res = $this->table('comment')->insert(
                     [
-                        'personnel_id'=>$session['personnel_id'],
-                        'local_id'=>$session['local_id'],
+                        'personnel_id'=>$session['pid'],
+                        'local_id'=>$session['lid'],
                         'teacher_id'=>$session['teacher_id'],
-                        'manag_id'=>$k,
-                        'text'=>$v,
                         'status'=>1,
                         'create_time'=>time(),
                     ]
                 );
-            }
-        }
+      }
+      dump($res);die;
         return $res;
     }
     /*
