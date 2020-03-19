@@ -13,63 +13,65 @@ use think\Controller;
 
 class Achievement extends Controller
 {
-    public function index(){
-        $time = model('achievement')->timelist();
-        $this->assign([
-            'time'=>$time
-        ]);
-        return $this->fetch('teacher/time');
+  public function index(){
+    $time = model('achievement')->timelist();
+//    dump($time);die;
+    $this->assign([
+      'time'=>$time
+    ]);
+    return $this->fetch('teacher/time');
+  }
+
+  public function timedel(){
+    if (request()->isAjax()){
+      $time =   input('time');
+      $ret = model('achievement')->timedel($time);
+      if ($ret ==null){//code
+        /*return json(['code'=>1,'msg'=>'删除成功','url'=>'index']);*/
+        return 1;
+      }
+      return 2;
     }
+  }
 
-    public function timedel(){
-        if (request()->isAjax()){
-            $time =   input('time');
-            $ret = model('achievement')->timedel($time);
-            if ($ret ==null){//code
-                /*return json(['code'=>1,'msg'=>'删除成功','url'=>'index']);*/
-                return 1;
-            }
-            return 2;
-        }
+  //显示出月份对应的老师调查分类数据
+  public function teacher(){
+    if (request()->isGet()){
+      $data = input();
+      $list = model('achievement')->indexlist($data);
+      $this->assign([
+        'data'=>$data,
+        'list'=>$list
+      ]);
     }
-
-    //显示出月份对应的老师调查分类数据
-    public function teacher(){
-        if (request()->isGet()){
-            $data = input();
-//            dump($data);die;
-            $list = model('achievement')->indexlist($data);
-
-          $this->assign([
-                'data'=>$data,
-                'list'=>$list
-            ]);
-        }
-        return view('time/sort');
+    if ($data['personnel_id'] ==3){
+      return view('time/position');
     }
+    return view('time/sort');
+  }
 
-    //学生满意度调查对应的各部门评分
-    public function company(){
-        $list = model('achievement')->company();
-        $this->assign([
-            'list'=>$list
-        ]);
-        return $this->fetch('achievement/company');
-    }
+  //学生满意度调查对应的各部门评分
+  public function company(){
+    $list = model('achievement')->company();
+    $this->assign([
+      'list'=>$list
+    ]);
+    return $this->fetch('achievement/company');
+  }
 
-    //显示班级对应的题目平均分
-    public function sort(){
-        if (request()->isGet()){
-            $id = input();
+  //显示班级对应的题目平均分
+  public function sort(){
+    if (request()->isGet()){
+      $id = input();
 //            $download = model('');
 //            dump($id);die;
-          $list = model('achievement')->Summation($id);
+      $list = model('achievement')->Summation($id);
 
-          $this->assign([
-                'id' => $id,
-                'list'=>$list
-            ]);
-            return $this->fetch('achievement/copic');
-        }
+      $this->assign([
+        'id' => $id,
+        'list'=>$list
+      ]);
+      return $this->fetch('achievement/copic');
     }
+  }
 }

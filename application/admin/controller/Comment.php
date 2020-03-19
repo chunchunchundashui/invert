@@ -30,7 +30,7 @@ class Comment extends Base
     {
         if (request()->isGet()) {
             $data = input('');
-            $result = model('comment')->teacherLst($data);
+          $result = model('comment')->teacherLst($data);
             $this->assign([
                 'time'=>$data['create_time'],
                 'teacherLst' => $result,
@@ -64,5 +64,19 @@ class Comment extends Base
                 $this->error('删除失败');
             }
         }
+    }
+
+
+    public function delone()
+    {
+      if (request()->isPost()) {
+        $data = input();
+        $result = model('comment')->delone($data);
+        if ($result) {
+          $this->success('删除成功', 'index/index');
+        }else {
+          $this->error('删除失败');
+        }
+      }
     }
 }

@@ -102,6 +102,7 @@
             $.post("{:url('comment/del')}",{personnel_id:$personnel_id,create_time:$create_time},function (data) {
                 if(data.code == 1){
                     //删除成功 删除元素
+                    // $(obj).parents('table tr').remove();
                     layer.msg(data.msg,{icon:1,time:1000} ,function () {
                         location.href = data.url;
                     });

@@ -64,4 +64,16 @@ class Comment extends Base
             ->delete();
         return $data;
     }
+
+  public function delone($data)
+  {
+    $data = db('comment')
+      ->field('id')
+      ->where("from_unixtime(create_time, '%Y-%m') = '{$data['create_time']}'")
+      ->where('personnel_id',$data['personnel_id'])
+      ->where('teacher_id',$data['teacher_id'])
+      ->where('local_id',$data['local_id'])
+      ->delete();
+    return $data;
+  }
 }

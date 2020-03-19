@@ -16,12 +16,16 @@ use think\Model;
 class Time  extends Controller
 {
     public function indexlist($personnel_id){
+      if ($personnel_id == 3){
+        $lsit = "personnel_id > 0";
+      }else {
+        $lsit = "personnel_id = {$personnel_id}";
+      }
         $list = Db::name('tanswer')
-            ->where('personnel_id',$personnel_id)
-            ->field("from_unixtime(time,'%Y-%m') as 'time'")
-            ->group('time')
-            ->select();
-
+          ->where($lsit)
+          ->field("from_unixtime(time,'%Y-%m') as 'time'")
+          ->group('time')
+          ->select();
       if ($list ==null){
             //如果数据库中不存在相关数据的话就返回空
             return '';

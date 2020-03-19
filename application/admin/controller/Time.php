@@ -15,11 +15,9 @@ class Time extends Controller
 {
     //总合调查显示首页面(调查时间)
     public function index(){
-
         if (request()->isGet()) {
             $personnel_id = input('id');
             $time = model('time')->indexlist($personnel_id);
-
           $this->assign([
                 'personnel_id'=>$personnel_id,
                 'time'=>$time

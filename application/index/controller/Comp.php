@@ -41,6 +41,8 @@ class Comp extends Base
        return $this->fetch('index/check');
     }
     public function add(){
+//      $code = mt_rand(0,100000);
+//      session('code', $code);
        $session = [
             'local_id'=>session('lid'),
             'teacher_id'=>session('tid'),
@@ -48,7 +50,6 @@ class Comp extends Base
             'personnel_id'=>session('pid'),
         ];
       $data = input('post.');
-
       $datas = $data['intro'];
       if ($session['personnel_id'] == 1) {
         foreach ($datas as $k => $v) {
@@ -66,8 +67,12 @@ class Comp extends Base
         if ($list&$res){
             $this->error('添加失败');
         }
-        $this->success('添加成功');
+        $this->success('添加成功', 'Comp/thanks');
+    }
 
+    public function thanks()
+    {
+      return view("yes/thanks");
     }
 }
 

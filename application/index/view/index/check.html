@@ -70,7 +70,7 @@
                 </div>
               </div>
          {/volist}
-          <input type="submit" id="login" style="margin-left:150px; margin-bottom: 20px;" value="提交">
+          <input type="submit" id="login" name="commit" style="margin-left:150px; margin-bottom: 20px;" value="提交" >
         </form>
       </div>
 
@@ -88,7 +88,8 @@
         data:$('form').serialize(),
         dataType:'json',
         success: function (data) {
-          console.log(data);return false;
+          location.href = data.url;
+          // console.log(data);return false;
         }
        });
       return false;
