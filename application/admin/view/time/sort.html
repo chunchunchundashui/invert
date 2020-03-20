@@ -65,7 +65,13 @@
                         <thead class="">
                             <tr>
                                 <th class="text-center">ID</th>
-                                <th class="text-center">老师名称</th>
+                                <th class="text-center">
+                                  {eq name="$data['personnel_id']" value="2"}
+                                  授课老师名称
+                                  {else /}
+                                  班主任名称
+                                  {/eq}
+                                </th>
                                 <th class="text-center">班级</th>
                                 <th class="text-center">平均分</th>
                                 <th class="text-center">参考人数</th>
@@ -76,7 +82,7 @@
                         <tbody>
                         {volist name="list" id="vo"}
                                    <tr>
-                                        <td align="center">{$vo.lid}</td>
+                                        <td align="center">{$vo.tid}</td>
                                         <td align="center">{$vo.name}</td>
                                         <td align="center">{$vo.local}</td>
                                         <td align="center">{$vo.achievement}</td>
@@ -87,7 +93,7 @@
                                             <a href="{:url('admin/achievement/sort',array('local_id'=>$vo['lid'],'personnel_id'=>$data['personnel_id'],'time'=>$data['time']))}" class="btn btn-primary btn-sm shiny">
                                                 <i class="fa fa-edit"></i> 属性
                                             </a>
-
+                                          <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" dataid="{$vo.tid}+{$data.time}+{$data.personnel_id}+{$vo['lid']}">删除</a>
                                           <a href="{:url('Teacher/expData', array('lid'=>$vo['lid'], 'teacher'=>$vo['name'], 'local'=>$vo['local']))}">
                                             <button type="button" class="btn btn-sm btn-active" >
                                               <i class="fa fa-download"></i>导出信息
@@ -125,35 +131,29 @@
     <script src="__admin__/style/beyond.js"></script>
     <script src="__js__/layer/layer.js"></script>
 <script>
-    $('.brand_del').click(function () {
-        var id = $(this).attr('dataid');
-        $.ajax({
-            url:"{:url('admin/achievement/del')}",
-            type:'post',
-            data: {id:id},
-            dataType:'json',
-            success: function (data) {
-                if ( true == data['code']) {
-                    layer.alert(data['msg'], {
-                        icon: 6,
-                        time:1000,
-                    },function () {
-                        location.href= data['url'];
-                    });
-                    return false;
-                }else {
-                    layer.alert(data['msg'], {
-                        icon: 5,
-                        time:5000,
-                    },function () {
-                        location.href= data['url'];
-                    });
-                    return false;
-                }
-            }
-        });
-        return false;
+  $('.brand_del').click(function () {
+    var id = $(this).attr('dataid');
+    layer.confirm('确定删除吗?', function () {
+    //var strs= new Array(); //定义一数组
+    strs=id.split("+"); //字符分割
+    $.ajax({
+      url:"{:url('admin/Achievement/commondel')}",
+      type:'post',
+      data: {'tid':strs[0],'time':strs[1],'personnel_id':strs[2],'lid':strs[3]},
+      dataType:'json',
+      success: function (data) {
+        if (data.code == 1) {
+          layer.msg(data.msg,{icon:1,time:1000} ,function () {
+            location.href = data.url;
+          });
+        }else{
+          layer.msg(data.msg,{icon:2,time:1000});
+        }
+      }
     });
+    });
+    return false;
+  });
 
     $('#back').click(function () {
       window.history.go(-1);

@@ -25,15 +25,17 @@ class Time extends Controller
         }
         return view();
     }
-//    public function Timedel(){
-//        if (request()->isAjax()){
-//            $time =   input('time');
-//            $ret = model('time')->del($time);
-//            if ($ret ==null){//code
-//                /*return json(['code'=>1,'msg'=>'删除成功','url'=>'index']);*/
-//                return 1;
-//            }
-//            return 2;
-//        }
-//    }
+  /*
+    * 公共删除(学生/老师/各部门)
+    */
+  public function timedel(){
+    if (request()->isAjax()){
+      $data = input();
+      $ret = model('time')->timedel($data);
+      if ($ret ==null){//code
+        $this->success('删除成功');
+      }
+      $this->error('删除失败');
+    }
+  }
 }

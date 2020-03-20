@@ -8,7 +8,8 @@
 
 namespace app\common\model;
 
-
+use catetree\Catetree;
+use think\Db;
 class Comment extends Base
 {
 
@@ -55,25 +56,48 @@ class Comment extends Base
     }
 
     //模型下面的删除本月时间
-    public function timedel($data)
-    {
-        $data = db('comment')
-            ->field('id')
-            ->where("from_unixtime(create_time, '%Y-%m') = '{$data['create_time']}'")
-            ->where('personnel_id',$data['personnel_id'])
-            ->delete();
-        return $data;
-    }
+//    public function timedel($data)
+//    {
+//        $data = db('comment')
+//            ->field('id')
+//            ->where("from_unixtime(create_time, '%Y-%m') = '{$data['create_time']}'")
+//            ->where('personnel_id',$data['personnel_id'])
+//            ->delete();
+//        return $data;
+//    }
+
+  /*
+    * 公共删除(评论)
+*/
+  public function timedel($data)
+  {
+    $personnel_id = "personnel_id = {$data['personnel_id']}";
+    $list = Db::name('comment')
+      ->field('id')
+      ->where($personnel_id)
+      ->where("from_unixtime(create_time,'%Y-%m')='{$data['create_time']}'")
+      ->select();
+    $tree = new Catetree();
+    $model = Db::name('comment');
+    $ret = $tree->delid($list,$model);
+    return $ret;
+  }
 
   public function delone($data)
   {
+    $personnel_id = "personnel_id = {$data['personnel_id']}";
+    $teacher_id = "teacher_id = {$data['teacher_id']}";
+    $local_id = "local_id = {$data['local_id']}";
     $data = db('comment')
       ->field('id')
       ->where("from_unixtime(create_time, '%Y-%m') = '{$data['create_time']}'")
-      ->where('personnel_id',$data['personnel_id'])
-      ->where('teacher_id',$data['teacher_id'])
-      ->where('local_id',$data['local_id'])
-      ->delete();
-    return $data;
+      ->where($personnel_id)
+      ->where($teacher_id)
+      ->where($local_id)
+      ->select();
+    $tree = new Catetree();
+    $model = db('comment');
+    $ret = $tree->delid($data,$model);
+    return $ret;
   }
 }

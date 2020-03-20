@@ -75,8 +75,7 @@
                                             <a href="{:url('admin/achievement/teacher',array('time'=>$vo['time'],'personnel_id'=>$personnel_id))}" class="btn btn-primary btn-sm shiny">
                                                 <i class="fa fa-edit"></i> 属性
                                             </a>
-                                            <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" dataid="{$vo.time}">删除</a>
-                                            </a>
+                                            <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" dataid="{$vo.time}+{$personnel_id}">删除</a>
                                         </td>
                                   </tr>
                             {/volist}
@@ -109,35 +108,32 @@
     <script src="__admin__/style/beyond.js"></script>
     <script src="__js__/layer/layer.js"></script>
 <script>
-    $('.brand_del').click(function () {
-        var id = $(this).attr('dataid');
-        $.ajax({
-            url:"{:url('admin/achievement/timedel')}",
-            type:'post',
-            data: {time:id},
-            dataType:'json',
-            success: function (data) {
-                if ( 1 == data) {
-                    layer.alert('删除成功', {
-                        icon: 6,
-                        time:1000,
-                    },function () {
-                        location.href= '';
-                    });
-                    return false;
-                }else{
-                    layer.alert('删除失败', {
-                        icon: 5,
-                        time:5000,
-                    },function () {
-                        location.href= '';
-                    });
-                    return false;
-                }
-            }
-        });
-        return false;
+  $('.brand_del').click(function () {
+    var id = $(this).attr('dataid');
+    layer.confirm('确定删除吗?', function () {
+    //var strs= new Array(); //定义一数组
+    strs=id.split("+"); //字符分割
+    //console.log(strs);return;
+    $.ajax({
+      url:"{:url('admin/time/timedel')}",
+      type:'post',
+      data: {'time':strs[0],'personnel_id':strs[1]},
+      dataType:'json',
+      success: function (data) {
+        if (data.code == 1) {
+          layer.msg(data.msg,{icon:1,time:1000} ,function () {
+            location.href = '';
+          });
+        }else{
+          layer.msg(data.msg,{icon:2,time:1000});
+        }
+      }
     });
+    });
+    return false;
+  });
+
+
 </script>
 
 </body></html>

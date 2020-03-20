@@ -69,8 +69,10 @@
                                                 <a href="{:url('comment/teacherLst', array('create_time' => $vo['ccreate_time'], 'personnel_id' => $personnel_id))}" id="mainEdit" class="btn btn-primary btn-sm shiny">
                                                     <i class="fa fa-edit"></i> 详细信息
                                                 </a>
-                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" kid="{$vo.ccreate_time
-                                                }" id="del">删除</a>
+                                                <!--<a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" kid="{$vo.ccreate_time}" id="del">删除</a>-->
+
+
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" dataid="{$vo.ccreate_time}+{$personnel_id}">删除</a>
                                             </td>
                                         </tr>
                                         {/volist}
@@ -95,45 +97,48 @@
 {include file="public/js" /}
 
 <script>
-    $('#del').click(function () {
-        var $personnel_id = {$personnel_id};
-        var $create_time= $(this).attr('kid');
-        layer.confirm('确定删除吗?', function () {
-            $.post("{:url('comment/del')}",{personnel_id:$personnel_id,create_time:$create_time},function (data) {
-                if(data.code == 1){
-                    //删除成功 删除元素
-                    // $(obj).parents('table tr').remove();
-                    layer.msg(data.msg,{icon:1,time:1000} ,function () {
-                        location.href = data.url;
-                    });
-                }else{
-                    //删除失败
-                    layer.msg(data.msg,{icon:2,time:1000});
-                }
-            });
+    // $('.brand_del').click(function () {
+    //   var id = $(this).attr('dataid');
+    //     layer.confirm('确定删除吗?', function () {
+    //         $.post("{:url('comment/del')}",{'time':strs[0],'personnel_id':strs[1]},function (data) {
+    //             if(data.code == 1){
+    //                 //删除成功 删除元素
+    //                 // $(obj).parents('table tr').remove();
+    //                 layer.msg(data.msg,{icon:1,time:1000} ,function () {
+    //                     location.href = '';
+    //                 });
+    //             }else{
+    //                 //删除失败
+    //                 layer.msg(data.msg,{icon:2,time:1000});
+    //             }
+    //         });
+    //     });
+    //     return false;
+    // });
+    $('.brand_del').click(function () {
+      var id = $(this).attr('dataid');
+      layer.confirm('确定删除吗?', function () {
+        //var strs= new Array(); //定义一数组
+        strs=id.split("+"); //字符分割
+        //console.log(strs);return;
+        $.ajax({
+          url:"{:url('comment/del')}",
+          type:'post',
+          data: {'create_time':strs[0],'personnel_id':strs[1]},
+          dataType:'json',
+          success: function (data) {
+            if (data.code == 1) {
+              layer.msg(data.msg,{icon:1,time:1000} ,function () {
+                location.href = '';
+              });
+            }else{
+              layer.msg(data.msg,{icon:2,time:1000});
+            }
+          }
         });
-        return false;
+      });
+      return false;
     });
-    /*用户-删除*/
-   /* function dele(obj,id){
-        var personnel_id = $(this).attr('kid');
-        console.log(personnel_id);return false;
-        layer.confirm('确认要删除吗？',function(index){
-            //发异步删除数据
-            $.post("{:url('comment/del')}",{create_time:id, personnel_id:personnel_id},function (data) {
-
-                if(data.code == 1){
-                    //删除成功 删除元素
-                    $(obj).parents('table tr').remove();
-                    layer.msg(data.msg,{icon:1,time:1000});
-                }else{
-                    //删除失败
-                    layer.msg(data.msg,{icon:2,time:1000});
-                }
-            });
-        });
-        return false;
-    }*/
 </script>
 
 

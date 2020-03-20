@@ -60,19 +60,6 @@ class Achievement extends Model
       ->paginate(5);
     return $list;
   }
-  //删除按时间分类
-  public function timedel($time)
-  {
-    $list = Db::name('tanswer')
-      ->field('id')
-      //->where("from_unixtime(time,'%Y-%m')",$time)
-      ->where("from_unixtime(time,'%Y-%m')='{$time}'")
-      ->select();
-    $tree = new Catetree();
-    $model = Db::name('tanswer');
-    $ret = $tree->delid($list,$model);
-    return $ret;
-  }
   public function Summation($id){
     //老师表
 
@@ -109,5 +96,38 @@ class Achievement extends Model
     $tree = new Catetree();
     $list = $tree->CateCompany($data);
     return $list;
+  }
+
+//  单个删除分数
+  public function commondel($data)
+  {
+    if ($data['personnel_id'] ==3){//各部门满意度
+      $where['personnel_id']=['>=',1];
+      $where['po.id']=$data['id'];
+      $json= ['local lo','te.id = lo.teacher_id'];
+      //dump($where);die;
+    }else{//教师满意度
+      $where['local_id']=$data['lid'];
+      $where['personnel_id']=$data['personnel_id'];
+      $where['a.teacher_id']=$data['tid'];
+      if ($data['personnel_id']==2){
+        $json= ['local lo','te.id = lo.teacher_id'];
+      }else{
+        $json= ['local lo','te.id = lo.teacher_class'];
+      }
+    }
+    $list = Db::name('tanswer')
+      ->alias('a')
+      ->field('a.id')
+      ->where($where)
+      ->where("from_unixtime(time,'%Y-%m')='{$data['time']}'")
+      ->join('teacher te','a.teacher_id = te.id')
+      ->join('position po','te.position_id = po.id')
+      ->join($json)
+      ->select();
+    $tree = new Catetree();
+    $model = Db::name('tanswer');
+    $ret = $tree->delid($list,$model);
+    return $ret;
   }
 }

@@ -55,7 +55,11 @@
                 <!-- /Page Breadcrumb -->
                 <!-- Page Body -->
               <button type="button" id="back" class="btn btn-sm btn-primary" style=" margin-left: 8px; margin-top: 20px;">返回上一级</button>
-
+              <a href="{:url('Teacher/expData')}">
+                <button type="button" style="margin-top: 20px; margin-left: 10px" class="btn btn-sm btn-active" >
+                  <i class="fa fa-download"></i>导出全部信息
+                </button>
+              </a>
               <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12">
         <div class="widget">
@@ -81,12 +85,7 @@
                                         <td align="center">{$vo.browse}</td>
                                         <td align="center">{:date('Y-m-d',$vo['time'])}</td>
                                         <td align="center">
-
-                                          <a href="{:url('Teacher/expData', array('lid'=>$vo['id'], 'teacher'=>$vo['pname']))}">
-                                            <button type="button" class="btn btn-sm btn-active" >
-                                              <i class="fa fa-download"></i>导出信息
-                                            </button>
-                                          </a>
+                                          <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" dataid="{$vo.id}+{$data.time}+{$data.personnel_id}">删除</a>
                                         </td>
                                   </tr>
                         {/volist}
@@ -119,35 +118,30 @@
     <script src="__admin__/style/beyond.js"></script>
     <script src="__js__/layer/layer.js"></script>
 <script>
-    $('.brand_del').click(function () {
-        var id = $(this).attr('dataid');
-        $.ajax({
-            url:"{:url('admin/achievement/del')}",
-            type:'post',
-            data: {id:id},
-            dataType:'json',
-            success: function (data) {
-                if ( true == data['code']) {
-                    layer.alert(data['msg'], {
-                        icon: 6,
-                        time:1000,
-                    },function () {
-                        location.href= data['url'];
-                    });
-                    return false;
-                }else {
-                    layer.alert(data['msg'], {
-                        icon: 5,
-                        time:5000,
-                    },function () {
-                        location.href= data['url'];
-                    });
-                    return false;
-                }
-            }
-        });
-        return false;
+
+  $('.brand_del').click(function () {
+    var id = $(this).attr('dataid');
+    layer.confirm('确定删除吗?', function () {
+    //var strs= new Array(); //定义一数组
+    strs=id.split("+"); //字符分割
+    $.ajax({
+      url:"{:url('admin/Achievement/commondel')}",
+      type:'post',
+      data: {'id':strs[0],'time':strs[1],'personnel_id':strs[2]},
+      dataType:'json',
+      success: function (data) {
+        if (data.code == 1) {
+          layer.msg(data.msg,{icon:1,time:1000} ,function () {
+            location.href = data.url;
+          });
+        }else{
+          layer.msg(data.msg,{icon:2,time:1000});
+        }
+      }
     });
+    });
+    return false;
+  });
 
     $('#back').click(function () {
       window.history.go(-1);

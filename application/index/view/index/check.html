@@ -30,7 +30,7 @@
         </p>
       </header>
       <div class="content">
-        <form action="" method="post">
+        <form action="" method="post" name="form" id="myform">
         {volist name="topic" id="vo" key="i"}
           <div class="classify">
             {if condition="$list['personnel']['id'] eq 1"}
@@ -70,7 +70,7 @@
                 </div>
               </div>
          {/volist}
-          <input type="submit" id="login" name="commit" style="margin-left:150px; margin-bottom: 20px;" value="提交" >
+          <input type="submit" id="login" onclick="format1()" name="commit" style="margin-left:150px; margin-bottom: 20px;" value="提交" >
         </form>
       </div>
 
@@ -81,19 +81,32 @@
     <script src="__admin__/style/jquery_002.js"></script>
 
   <script>
-    $('#login').click(function () {
-      $.ajax({
-        url:"{:url('comp/add')}",
-        type:'post',
-        data:$('form').serialize(),
-        dataType:'json',
-        success: function (data) {
-          location.href = data.url;
-          // console.log(data);return false;
-        }
-       });
-      return false;
-    });
+    //  判断不能为空
+    window.onload = function() {
+      var login = document.getElementById("login");
+      var textarea = document.getElementsByTagName("textarea").innerText;
+      login.onclick = function () {
+        for (var i = 0; i<textarea.length; i++){
+          // console.log(textarea[i]);
+          // console.log(textarea[i].innerText);return false;
+            if (textarea[i] == '') {
+              alert('意见不能为空');
+              return false;
+            }else {
+              $.ajax({
+                url:"{:url('comp/add')}",
+                type:'post',
+                data:$('form').serialize(),
+                dataType:'json',
+                success: function (data) {
+                  location.href = data.url;
+                }
+              });
+              return false;
+            }
+          }
+        };
+    };
   </script>
   </body>
 </html>

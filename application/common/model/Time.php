@@ -34,15 +34,27 @@ class Time  extends Controller
 
       return $res;
     }
-    public function Timedel($time)
-    {
-        $list = Db::name('tanswer')
-            ->field('id')
-            ->where("from_unixtime(time,'%Y-%m')='{$time}'")
-            ->select();
-        $tree = new Catetree();
-        $model = Db::name('tanswer');
-        $ret = $tree->delid($list,$model);
-        return $ret;
+
+
+  /*
+  * 公共删除(学生/老师/各部门)
+  */
+  public function timedel($data)
+  {
+    if ($data['personnel_id'] ==3){
+      $personnel_id= "personnel_id > 0";
+    }else{
+      $personnel_id = "personnel_id = {$data['personnel_id']}";
+      //dump($lists);die;
     }
+    $list = Db::name('tanswer')
+      ->field('id')
+      ->where($personnel_id)
+      ->where("from_unixtime(time,'%Y-%m')='{$data['time']}'")
+      ->select();
+    $tree = new Catetree();
+    $model = Db::name('tanswer');
+    $ret = $tree->delid($list,$model);
+    return $ret;
+  }
 }

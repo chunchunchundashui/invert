@@ -22,18 +22,6 @@ class Achievement extends Controller
     return $this->fetch('teacher/time');
   }
 
-  public function timedel(){
-    if (request()->isAjax()){
-      $time =   input('time');
-      $ret = model('achievement')->timedel($time);
-      if ($ret ==null){//code
-        /*return json(['code'=>1,'msg'=>'删除成功','url'=>'index']);*/
-        return 1;
-      }
-      return 2;
-    }
-  }
-
   //显示出月份对应的老师调查分类数据
   public function teacher(){
     if (request()->isGet()){
@@ -72,6 +60,18 @@ class Achievement extends Controller
         'list'=>$list
       ]);
       return $this->fetch('achievement/copic');
+    }
+  }
+
+//  单个删除分数
+  public function commondel(){
+    if (request()->isAjax()){
+      $data = input();
+      $ret = model('Achievement')->commondel($data);
+      if ($ret ==null){
+        $this->success('删除成功', 'index/index');
+      }
+      $this->error('删除失败');
     }
   }
 }

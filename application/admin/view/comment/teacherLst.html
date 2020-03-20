@@ -58,7 +58,13 @@
                                     <table class="table table-bordered table-hover">
                                         <thead class="">
                                         <tr>
-                                            <th  class="text-center">老师名称</th>
+                                            <th  class="text-center">
+                                                {if condition="$data['personnel_id'] eq 1"}
+                                                班主任名称
+                                                {else /}
+                                                教师名称
+                                                {/if}
+                                            </th>
                                             <th  class="text-center">班级名称</th>
                                             <th class="text-center">调查名称</th>
                                             <th  class="text-center">添加时间</th>
@@ -73,10 +79,11 @@
                                             <td align="center">{$vo.pname}</td>
                                             <td align="center">{:date('Y-m-d',$vo['create_time'])}</td>
                                             <td align="center">
-                                                <a href="{:url('comment/classLst', array('local_id'=>$vo['local_id'],'teacher_id' =>$vo['teacher_id'], 'tname'=>$vo['tname'], 'lname'=>$vo['lname'], 'create_time'=>$time, 'personnel_id'=>$vo['personnel_id']))}" id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                <a href="{:url('comment/classLst', array('local_id'=>$vo['local_id'],'teacher_id' =>$vo['teacher_id'], 'tname'=>$vo['tname'], 'lname'=>$vo['lname'], 'create_time'=>$data['create_time'], 'personnel_id'=>$vo['personnel_id']))}" id="mainEdit" class="btn btn-primary btn-sm shiny">
                                                     <i class="fa fa-edit"></i> 班级评论
                                                 </a>
-                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" kid="{:date('Y-m',$vo['create_time'])}" id="del">删除</a>
+                                                <!--<a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" kid="{:date('Y-m',$vo['create_time'])}" id="del">删除</a>-->
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" dataid="{:date('Y-m',$vo['create_time'])}+{$vo['personnel_id']}+{$vo['local_id']}+{$vo['teacher_id']}">删除</a>
                                             </td>
                                         </tr>
                                         {/volist}
@@ -104,22 +111,27 @@
 {include file="public/js" /}
 
 <script>
-    $("#del").click(function () {
-      var $teacher_id = {$vo.teacher_id};
-      var $local_id = {$vo.local_id};
-      var $personnel_id = {$vo.personnel_id};
-      var $create_time = $(this).attr('kid');
-        layer.confirm('确定要删除吗?', function () {
-          $.post("{:url('comment/delone')}", {create_time:$create_time,teacher_id:$teacher_id,local_id:$local_id,personnel_id:$personnel_id}, function (data) {
+    $('.brand_del').click(function () {
+      var id = $(this).attr('dataid');
+      layer.confirm('确定删除吗?', function () {
+        //var strs= new Array(); //定义一数组
+        strs=id.split("+"); //字符分割
+        $.ajax({
+          url:"{:url('comment/delone')}",
+          type:'post',
+          data: {'create_time':strs[0],'personnel_id':strs[1],'local_id':strs[2],'teacher_id':strs[3]},
+          dataType:'json',
+          success: function (data) {
             if (data.code == 1) {
-              layer.msg(data.msg,{icon:1,time:1000},function () {
-                location.href = data.url;
+              layer.msg(data.msg,{icon:1,time:1000} ,function () {
+                location.href = '';
               });
-            } else {
+            }else{
               layer.msg(data.msg,{icon:2,time:1000});
             }
-          });
+          }
         });
+      });
       return false;
     });
 
