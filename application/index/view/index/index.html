@@ -12,12 +12,12 @@
 
     <div class="wrapper">
       <div class="check-box">
-        <form action="{:url('comp/index')}" method="post">
+        <form action="{:url('comp/index')}" method="post" data-auto="true">
           <h3>新华电脑学校问卷调查</h3>
           <label for="">
             <span>调查方式:</span>
-            <select name="pid" id="survey">
-              <option value="">--请选择--</option>
+            <select required name="pid" id="survey">
+              <option value=""  disabled selected>--请选择--</option>
               <!--<?php var_dump($personnel);?>-->
 
               {volist name="personnel" id="vo"}
@@ -29,7 +29,7 @@
           <label for="" class="hidden_class" style="display: none">
             <span>班级</span>
             <select name="lid" id="class">
-              <option value="0">--请选择--</option>
+              <option value="0" disabled selected >--请选择--</option>
               {volist name="local" id="class"}
                 <option value="{$class.id}">{$class.name}</option>
               {/volist}
@@ -41,7 +41,7 @@
               <option value="">--请选择--</option>
             </select>
           </label>
-          <button style="width: 100%; cursor: pointer;" type="submit" class="mui-btn mui-btn-primary">
+          <button style="width: 100%; cursor: pointer;" id="login" type="submit" class="mui-btn mui-btn-primary">
             提交
           </button>
         </form>
@@ -49,6 +49,7 @@
     </div>
     <script src="__index__/js/jquery-3.3.1.min.js"></script>
     <script src="__index__/js/min.ui.js"></script>
+    <script src="__js__/layer/layer.js"></script>
     <script type="text/javascript">
       $(function () {
           $('#survey').change(function () {
@@ -78,22 +79,29 @@
                   return false;
               });
           });
-          $('#login').click(function () {
-            var pid = $("#survey").val();
-            var lid = $("#class").val();
-            var tid = $("#teacher").val();
-            $.ajax({
-              url:"{:url('index/comp/index')}",
-              type:'post',
-              data: {pid:pid,lid:lid,tid:tid},
-              dataType:'json',
-              success: function (data) {
-                location.href = data.url;
-              }
-            });
-            return false;
-          });
       });
+      //   $('#login').click(function () {
+      //     var pid = $("#survey").val();
+      //     var lid = $("#class").val();
+      //     var tid = $("#teacher").val();
+      //     $.ajax({
+      //       url:"{:url('comp/index')}",
+      //       type:'post',
+      //       data: {pid:pid,lid:lid,tid:tid},
+      //       dataType:'json',
+      //       success: function (data) {
+      //         // console.log(data);return false
+      //         if (data.code == 1) {
+      //           layer.msg(data.msg,{icon:1,time:500}, function () {
+      //             location.href = data.url;
+      //           });
+      //         }else {
+      //           layer.msg(data.msg,{icon:2,time:1000});
+      //         }
+      //       }
+      //     });
+      //     return false;
+      //   });
     </script>
   </body>
 </html>

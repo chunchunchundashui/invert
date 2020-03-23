@@ -9,7 +9,6 @@ class Comp extends Base
 {
   //
   public function indexdata($data){
-//    dump($data);die;
       if ($data['pid'] == 2) {
         $list['teacher_name'] = Db::name('local')
           ->alias('a')
@@ -25,6 +24,7 @@ class Comp extends Base
           ->where('a.id',$data['lid'])->find();   //班主任
         session('cid',$list['class_name']['teacher_class']);
       }
+
     $list['local_name'] = Db::name('Local')->field('id,name')->where('id',$data['lid'])->find();
     $list['personnel'] = Db::name('Personnel')->field('name,id')->where('id',$data['pid'])->find();
     session('lid',$list['local_name']['id']);

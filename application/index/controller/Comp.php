@@ -11,6 +11,7 @@ namespace app\index\controller;
 use think\Db;
 use think\Session;
 
+
 class Comp extends Base
 {
     /*
@@ -20,29 +21,32 @@ class Comp extends Base
     {
         if (request()->isPost()) {
             $data = input('post.');
+//            $validate = validate('comp');
+//            if (!$validate->check($data)) {
+//              $this->error($validate->getError());
+//            }
           //根据条件查询
             $list= model('comp')->indexdata($data);
           if ($data['pid'] == 2){
-            $topic = model('topic')->BaseByTopicBySelect($data['pid']);
+              $topic = model('topic')->BaseByTopicBySelect($data['pid']);
               $this->assign([
-                'list' => $list,
-                'topic' => $topic
-              ]);
-              return $this->fetch('teacher/index');
+                  'list' => $list,
+                  'topic' => $topic
+                ]);
+                return $this->fetch('teacher/index');
             }elseif ($data['pid'] == 1){
-
-            $topic = model('topic')->StudentSelect($data['pid']);
-            }
+              $topic = model('topic')->StudentSelect($data['pid']);
+            $this->assign([
+              'list'=>$list,
+              'topic'=> $topic
+            ]);
+            return $this->fetch('index/check');
+          }
         }
-        $this->assign([
-            'list'=>$list,
-            'topic'=> $topic
-        ]);
-       return $this->fetch('index/check');
     }
+
+//    添加教师过着学的数据
     public function add(){
-//      $code = mt_rand(0,100000);
-//      session('code', $code);
        $session = [
             'local_id'=>session('lid'),
             'teacher_id'=>session('tid'),
@@ -70,6 +74,7 @@ class Comp extends Base
         $this->success('添加成功', 'Comp/thanks');
     }
 
+//    提交成功页面
     public function thanks()
     {
       return view("yes/thanks");

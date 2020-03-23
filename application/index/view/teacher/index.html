@@ -75,7 +75,7 @@
 <script src="__index__/js/min.ui.js"></script>
 <script src="__admin__/style/jquery.js"></script>
 <script src="__admin__/style/jquery_002.js"></script>
-
+<script src="__js__/layer/layer.js"></script>
 <script>
   $('#login').click(function () {
     $.ajax({
@@ -84,7 +84,13 @@
       data:$('form').serialize(),
       dataType:'json',
       success: function (data) {
-        location.href = data.url;
+        if (data.code == 1) {
+          layer.msg(data.msg,{icon:1,time:500} ,function () {
+            location.href = data.url;
+          });
+        }else{
+          layer.msg(data.msg,{icon:2,time:1000});
+        }
       }
     });
     return false;
