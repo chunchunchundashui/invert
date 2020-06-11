@@ -63,8 +63,16 @@
                         <div class="form-group">
                             <label  class="col-sm-2 control-label no-padding-right" >问题名称</label>
                             <div class="col-sm-6">
-                                <input class="form-control"  name="topic" required="" placeholder="请输入问题名称" type="text">
+                                <input class="form-control" disabled name="topic" id="topic" placeholder="请输入问题名称" type="text">
                             </div>
+                             <script  type="text/javascript" charset="utf-8" >
+                                 $(function(){
+                                        $("#dongshao2").click(function() {
+                                            $("#topic").attr("disabled",false);
+                                        });
+                                 });
+                             </script>   
+                             <input type="button" id="dongshao2" value='开启' class="btn btn-default">
                         </div>
                         <div class="form-group">
                             <label for="cateid" class="col-sm-2 control-label no-padding-right">调查方式名称</label>
@@ -139,13 +147,21 @@
                 });
                 return false;
             })
+
+
+            
+       
+
         });
 
         $('#back').click(function () {
             window.history.go(-1);
             // alert(132);return false;
         });
-    </script>
+         
+          
 
+    </script>
+                                
 
 </body></html>

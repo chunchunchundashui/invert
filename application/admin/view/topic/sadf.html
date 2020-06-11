@@ -1,0 +1,1056 @@
+
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <title>调查系统</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="/static/admin/style/bootstrap.css" rel="stylesheet">
+    <link href="/static/admin/style/font-awesome.css" rel="stylesheet">
+    <link href="/static/admin/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="/static/admin/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="/static/admin/style/demo.css" rel="stylesheet">
+    <link href="/static/admin/style/typicons.css" rel="stylesheet">
+    <link href="/static/admin/style/animate.css" rel="stylesheet">
+
+</head>
+<body>
+<!-- 头部 -->
+<div class="navbar">
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="navbar-container">
+                <!-- Navbar Barnd -->
+                <div class="navbar-header pull-left">
+                    <a href="/admin/index/index.html" class="navbar-brand">
+                        <small>
+                            <img src="/static/admin/images/logo.png" alt="">
+                        </small>
+                    </a>
+                </div>
+                <!-- /Navbar Barnd -->
+                <!-- Sidebar Collapse -->
+                <!-- /Sidebar Collapse -->
+                <!-- Account Area and Settings -->
+                <div class="navbar-header pull-right">
+                    <div class="navbar-account">
+                        <ul class="account-area" style="margin-right: 100px">
+                            <li>
+                                <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                    <div class="avatar" style="width: 68px; font-size: 20px; color: white;" title="View your public profile">
+                                        用户名:
+                                    </div>
+                                    <section>
+                                        <h2><span class="profile" style="padding-top: 2px"><span>123456</span></span></h2>
+
+                                    </section>
+                                </a>
+                            <li class="dropdown-footer">
+                                <a href="javascript:void(0)"style="color:white; padding-top: 13px" id="outLogin">
+                                    退出登录
+                                </a>
+                            </li>
+                            <!--Login Area Dropdown-->
+                            <!-- /Account Area -->
+                            <!--Note: notice that setting div must start right after account area list.
+                                no space must be between these elements-->
+                            <!-- Settings -->
+                        </ul>
+                    </div>
+                </div>
+                <!-- /Account Area and Settings -->
+            </div>
+        </div>
+
+    </div>
+    <script src="/static/admin/style/jquery-3.4.1.min.js"></script>
+    <script src="/static/admin/style/bootstrap.js"></script>
+    <script src="/static/admin/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="/static/admin/style/beyond.js"></script>
+    <script src="/static/lib/layer/layer.js"></script>
+
+
+
+    <script>
+        $(function () {
+            $('#outLogin').click(function () {
+                $.ajax({
+                    url: "/admin/index/outlogin.html",
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 1) {
+                            layer.msg(data.msg ,{
+                                icon:6,
+                                time:1000
+                            }, function () {
+                                location.href = data.url;
+                            });
+                        }else {
+                            layer.open({
+                                title:'退出!',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+
+</div>
+
+<!-- /头部 -->
+
+<div class="main-container container-fluid">
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        <div class="page-sidebar" id="sidebar">
+            <!-- Page Sidebar Header-->
+            <div class="sidebar-header-wrapper">
+                <input class="searchinput" type="text">
+                <i class="searchicon fa fa-search"></i>
+                <div class="searchhelper">Search Reports, Charts, Emails or Notifications</div>
+            </div>
+            <!-- /Page Sidebar Header -->
+            <!-- Sidebar Menu -->
+            <ul class="nav sidebar-menu">
+                <!--Dashboard-->
+
+                <!--人员类型分类-->
+                <li>
+                    <a href="javascript:void(0)" class="menu-dropdown">
+                        <i class="menu-icon fa  fa-user"></i>
+                        <span class="menu-text">调查方式分类</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="/admin/personnel/lst.html">
+                                <span class="menu-text">调查方式</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+                        <!--<li>-->
+                        <!--<a href="/admin/position/lst.html">-->
+                        <!--<span class="menu-text">部门分类</span>-->
+                        <!--<i class="menu-expand"></i>-->
+                        <!--</a>-->
+                        <!--</li>-->
+                    </ul>
+                </li>
+
+                <!--班级分类-->
+                <li>
+                    <a href="javascript:void(0)" class="menu-dropdown">
+                        <i class="menu-icon fa fa-renren"></i>
+                        <span class="menu-text">班级分类</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="/admin/grade/lst.html">
+                                <span class="menu-text">班级添加</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/local/lst.html">
+                                <span class="menu-text">班级分类</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <!--老师分类管理-->
+                <li>
+                    <a href="javascript:void(0)" class="menu-dropdown">
+                        <i class="menu-icon fa  fa-user-md"></i>
+                        <span class="menu-text">老师分类管理</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="/admin/main/lst.html">
+                                <span class="menu-text">职位管理</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/teacher/lst.html">
+                                <span class="menu-text">老师管理</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <!--部门分类管理-->
+                <li>
+                    <a href="javascript:void(0)" class="menu-dropdown">
+                        <i class="menu-icon fa fa-building"></i>
+                        <span class="menu-text">部门分类管理</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="/admin/position/lst.html">
+                                <span class="menu-text">部门分类管理</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <!--题目分类管理-->
+                <li>
+                    <a href="javascript:void(0)" class="menu-dropdown">
+                        <i class="menu-icon fa fa-database"></i>
+                        <span class="menu-text">题目分类管理</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="/admin/manag/lst.html">
+                                <span class="menu-text">题目标题管理</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/topic/lst.html">
+                                <span class="menu-text">调查问题列表</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <!--用户管理-->
+                <li>
+                    <a href="javascript:void(0)" class="menu-dropdown">
+                        <i class="menu-icon fa fa-male"></i>
+                        <span class="menu-text">用户管理</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="/admin/user/lst.html" >
+                                <span class="menu-text">用户</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!--调查统计-->
+                <li>
+                    <a href="javascript:void(0)" class="menu-dropdown">
+                        <i class="menu-icon glyphicon glyphicon glyphicon-book"></i>
+                        <span class="menu-text">调查统计</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="/admin/time/index/id/1.html">
+                                <span class="menu-text">学生综合调查管理数据</span>
+                                <i class="menu-expand"></i>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="/admin/time/index/id/2.html">
+                                <span class="menu-text">教师授课满意度调查</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/time/index/id/3.html">
+                                <span class="menu-text">各题目的平均分</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!--评论区-->
+                <!--部门分类管理-->
+                <li>
+                    <a href="javascript:void(0)" class="menu-dropdown">
+                        <i class="menu-icon fa fa-comment"></i>
+                        <span class="menu-text">评论区</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="/admin/comment/lst/personnel_id/1.html">
+                                <span class="menu-text">学生评论</span>
+                                <i class="menu-expand"></i>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="/admin/comment/lst/personnel_id/2.html">
+                                <span class="menu-text">老师评论</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- /Sidebar Menu -->
+        </div>
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="/admin/index/index.html">系统</a>
+                    </li>
+                    <li class="active">调查问题管理</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+
+            <!-- Page Body -->
+            <div class="page-body">
+                <form id="form1" class="form-horizontal" role="form" action="" method="get">
+                    <div class="form-group">
+                          <span class="input-icon icon-right inverted">
+                          <input  type="text" id="personnel" name="personnel" value="" placeholder="输入调查问题名称" style="width: 20%; margin-left: 572px;display: inline-block" class="form-control">
+                              <button type="button" id="seBtn" style="margin-bottom: 4px;" class="btn btn-default">
+                          <i class="glyphicon glyphicon-search block"></i>搜索
+                              </button>
+                          </span>
+
+                    </div>
+
+
+                </form>
+
+                <!--<span  class="input-icon inverted">-->
+                <!--<input style="width: 40%; margin: auto; font-size: 13px" type="text" placeholder="输入老师名称" class="form-control input-sm">-->
+                <!--<i  style="margin-left: 443px;width: 50px;" class="glyphicon glyphicon-search bg-blue">搜索</i>-->
+                <!--</span>-->
+                <a href="/admin/topic/add.html" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;Add</a>
+                </button>
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <div class="widget-body">
+                                <div class="flip-scroll">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="">
+                                        <tr>
+                                            <th class="text-center">调查分组</th>
+                                            <th class="text-center">调查问题名称</th>
+                                            <th class="text-center" style="width: 150px; height: 1px">题目分类</th>
+                                            <th class="text-center">题目</th>
+
+                                            <th class="text-center">状态</th>
+                                            <th class="text-center">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!--
+                                        array(9) { ["id"]=> int(1)
+                                         ["personnel_id"]=> int(1)
+                                         ["manag_id"]=> int(3)
+                                         ["topic"]=> string(5) "1.对"
+                                         ["create_time"]=> int(1525351241)
+                                         ["update_time"]=> int(1588821529)
+                                         ["status"]=> int(1)
+                                         ["pname"]=> string(27) "学生综合满意度调查"
+                                         ["mname"]=> string(18) "学生综合管理" }
+                                        -->
+                                        <td align="center">学生综合满意度调查</td>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">1.对</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">后勤管理</td>
+                                            <td align="center">1.保安是否按照要求上课期间出入登记,保安态度是否良好</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">后勤管理</td>
+                                            <td align="center">2.公共卫生区域卫生保洁打扫是否及时,垃圾是否及时清理</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">2.班主任工作负责，经常主动找学生谈心，及时协调处理学生反映的各类问题并将处理结果反馈给学生？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">3.学校考试纪律严明，考风正派？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">4.学校组织了职业素质课程教育，个人受益很多？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">5.班级是否对教室卫生,公共区域卫生进行责任划分并督促打扫</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">6.你是否接受过学校组织的安全教育,包括食品安全,意外伤害,人生财产安全等</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">7.学校社团管理是否规范,社团成员工作是否出色</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">8.近期校园公共卫生状态是否良好</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">9.近期校园保卫和保安设施是否齐全，学校安全状况良好</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">10.对违纪的学生是否及时进行管理教育</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">学生综合管理</td>
+                                            <td align="center">11.学校组织的比赛、文艺活动多、能够丰富学生的课余生活？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">机房管理</td>
+                                            <td align="center">1.机房老师服务态度好，经常主动巡查，上机秩序井然？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">机房管理</td>
+                                            <td align="center">2.教学设备软硬件维护维修及时，可满足学习需要？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">你对班级管理的意见或建议</td>
+                                            <td align="center"></td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">你对教学管理的意见或建议</td>
+                                            <td align="center"></td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">你对学校考证和就业的意见或建议</td>
+                                            <td align="center"></td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">在校期间，你缴费以后是否都拿到发票？如缴费后未拿到发票，请写明具体情况</td>
+                                            <td align="center"></td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">学生综合满意度调查</td>
+                                            <td align="center">爸爸</td>
+                                            <td align="center"></td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <td align="center">教师授课满意度调查</td>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">1.教师上课、上机时，对作业是否每次都认真批改和讲评？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">2.学校教师能够为人师表、按时上课？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">3.学校组织的测验和考试的内容能反映课程的重要部分？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">4.课外教师经常主动找学生谈心，了解并指导学生学习？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">5.课内外教师都愿意解答和帮助学生，上机均有老师辅导？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">6.任课老师在上课前是否对班级学生点名？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">7.学校的职业素质课对我帮助很大，对班级学生素质提升有益？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">8.任课老师在上课时是否对违纪学生进行管理或提醒？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">9.教师语言清晰流畅、言能达意、讲课生动、形象？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">12.任课老师在上课前是否对班级学生点名?</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">20.老师上课方法是否易于接受？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/wrong.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">21.老师引导和启发，使你对课程产生兴趣并喜欢吗？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">22.老师是否经常关注学生对教学内容的掌握程度？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">23.老师布置的作业与本节课教学内容结合紧密吗？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">24.老师对布置作业完成情况是否过问？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">25.老师经常联系实际，注重学生能力及素质培养吗？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">26.老师的授课对你是否有吸引力？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">27.每堂课教学目标和任务明确吗？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">28.老师对教学设备的使用是否熟练？</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"></td>
+                                            <td align="center">教师授课满意度调查</td>
+                                            <td align="center">教学质量服务</td>
+                                            <td align="center">29.老师授课认真负责，从不把正课时间安排自习</td>
+
+                                            <td align="center">                                                 <img src="/static/admin/images/right.png" alt="">
+                                            </td>
+                                            <td align="center">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'')">删除</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="padding-top: 10px; text-align: right;">
+                                    <!--分页-->
+
+                                </div>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+</div>
+
+<!--Basic Scripts-->
+<script src="/static/admin/style/jquery-3.4.1.min.js"></script>
+<script src="/static/admin/style/bootstrap.js"></script>
+<script src="/static/admin/style/jquery.js"></script>
+<!--Beyond Scripts-->
+<script src="/static/admin/style/beyond.js"></script>
+<script src="/static/lib/layer/layer.js"></script>
+
+
+
+
+<script>
+    /*用户-删除*/
+    function dele(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            //发异步删除数据
+            $.post("/admin/topic/del.html",{id:id},function (data) {
+
+                if(data.code == 1){
+                    //删除成功 删除元素
+                    $(obj).parents('table tr').remove();
+                    layer.msg(data.msg,{icon:1,time:1000});
+                }else{
+                    //删除失败
+                    layer.msg(data.msg,{icon:2,time:1000});
+                }
+            });
+        });
+    }
+
+
+    $(function () {
+        //搜索
+        $('#seBtn').click(function () {
+            var personnel = $('#personnel').val();
+            $.ajax({
+                url: "/admin/topic/lst.html",
+                type: 'get',
+                data: {personnel:personnel},
+                success:function (data) {
+                    // console.log(data)
+                    $("html").empty().append($(data))
+                    // location.reload();
+                }
+            });
+        });
+    });
+</script>
+
+
+</body></html>

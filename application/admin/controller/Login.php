@@ -4,7 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\captcha\Captcha;
 
-class Login extends Controller
+class Login extends Base
 {
     //重复登录过滤
     public function _initialize()

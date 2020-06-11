@@ -54,7 +54,13 @@
                 </div>
                 <!-- /Page Breadcrumb -->
                 <!-- Page Body -->
-              <button type="button" id="back" class="btn btn-sm btn-primary" style=" margin-left: 8px; margin-top: 20px;">返回上一级</button>
+              <button type="button" id="back" class="btn btn-sm btn-primary" style=" margin-left: 8px; margin-top: 20px;">
+              返回上一级</button>
+            <a href="{:url('Achievement/achieve')}">
+                <button type="button" style=" margin-left: 8px; margin-top: 20px;" class="btn btn-sm btn-active" >
+                <i class="fa fa-download"></i>导出信息
+                </button>
+            </a>
 
               <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12">
@@ -94,11 +100,6 @@
                                                 <i class="fa fa-edit"></i> 属性
                                             </a>
                                           <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" dataid="{$vo.tid}+{$data.time}+{$data.personnel_id}+{$vo['lid']}">删除</a>
-                                          <a href="{:url('Teacher/expData', array('lid'=>$vo['lid'], 'teacher'=>$vo['name'], 'local'=>$vo['local']))}">
-                                            <button type="button" class="btn btn-sm btn-active" >
-                                              <i class="fa fa-download"></i>导出信息
-                                            </button>
-                                          </a>
                                         </td>
                                   </tr>
                         {/volist}

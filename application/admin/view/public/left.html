@@ -42,11 +42,18 @@
             </a>
             <ul class="submenu">
                 <li>
+                    <a href="{:url('grade/lst')}">
+                        <span class="menu-text">班级添加</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                </li>
+                <li>
                     <a href="{:url('local/lst')}">
                         <span class="menu-text">班级分类</span>
                         <i class="menu-expand"></i>
                     </a>
                 </li>
+
             </ul>
         </li>
 
@@ -142,21 +149,27 @@
             </a>
             <ul class="submenu">
                 <li>
-                    <a href="{:url('admin/Time/index',array('id'=>1))}">
+                    <a href="{:url('time/index',array('id'=>1))}">
                         <span class="menu-text">学生综合调查管理数据</span>
                         <i class="menu-expand"></i>
                     </a>
 
                 </li>
                 <li>
-                    <a href="{:url('admin/Time/index',array('id'=>2))}">
+                    <a href="{:url('time/index',array('id'=>2))}">
                         <span class="menu-text">教师授课满意度调查</span>
                         <i class="menu-expand"></i>
                     </a>
                 </li>
                 <li>
-                    <a href="{:url('admin/Time/index',array('id'=>3))}">
-                        <span class="menu-text">各部门满意度分数及意见</span>
+                    <a href="{:url('time/index',array('id'=>3))}">
+                        <span class="menu-text">各题目的平均分</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:url('time/index',array('id'=>4))}">
+                        <span class="menu-text">各大题平均分</span>
                         <i class="menu-expand"></i>
                     </a>
                 </li>

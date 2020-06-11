@@ -58,7 +58,6 @@ class Teacher extends Base
         if (!$validate->scene('add')->check($data)) {
             return $validate->getError();
         }
-
         $result = $this->allowField(true)->save($data);
 
         if ($result) {

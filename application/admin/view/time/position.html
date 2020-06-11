@@ -55,7 +55,7 @@
                 <!-- /Page Breadcrumb -->
                 <!-- Page Body -->
               <button type="button" id="back" class="btn btn-sm btn-primary" style=" margin-left: 8px; margin-top: 20px;">返回上一级</button>
-              <a href="{:url('Teacher/expData')}">
+              <a href="{:url('Teacher/expDataPos')}">
                 <button type="button" style="margin-top: 20px; margin-left: 10px" class="btn btn-sm btn-active" >
                   <i class="fa fa-download"></i>导出全部信息
                 </button>
@@ -72,8 +72,6 @@
                                 <th class="text-center">部门名称</th>
                                 <th class="text-center">平均分</th>
                                 <th class="text-center">参考人数</th>
-                                <th class="text-center">时间</th>
-                                <th class="text-center">属性</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,11 +80,7 @@
                                         <td align="center">{$vo.id}</td>
                                         <td align="center">{$vo.pname}</td>
                                         <td align="center">{$vo.achievement}</td>
-                                        <td align="center">{$vo.browse}</td>
                                         <td align="center">{:date('Y-m-d',$vo['time'])}</td>
-                                        <td align="center">
-                                          <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" dataid="{$vo.id}+{$data.time}+{$data.personnel_id}">删除</a>
-                                        </td>
                                   </tr>
                         {/volist}
                         </tbody>

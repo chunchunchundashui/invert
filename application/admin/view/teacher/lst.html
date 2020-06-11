@@ -49,19 +49,14 @@
             <!-- Page Body -->
 
             <div class="page-body">
-                <form id="form1" class="form-horizontal" role="form" action="" method="get">
+                <form id="form1" class="navbar-form navbar-right" method="get">
                     <div class="form-group">
-                          <span class="input-icon icon-right inverted">
-                          <input  type="text" id="tname" name="tname" value="{$Think.get.tname}" placeholder="输入老师名称" style="width: 20%; margin-left: 573px;display: inline-block" class="form-control">
-                              <button type="button" id="seBtn" style="margin-bottom: 4px;" class="btn btn-default">
-                          <i class="glyphicon glyphicon-search block"></i>搜索
-                              </button>
-                          </span>
-
+                        <input type="text" class="form-control input-sm" id="search" name="tname" value="{$Think.get.tname}" placeholder="搜索" style="margin-left: 572px;display: inline-block"/>
                     </div>
-
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default btn-sm">搜索</button>
+                    </div>
                 </form>
-
                 <a href="{:url('Teacher/add')}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;Add</a>
                 </button>
                 <div class="row">
@@ -84,7 +79,7 @@
                                         <tbody>
                                         {volist name="Teacher" id="vo"}
                                         <tr>
-                                            <td align="center">{$vo.id}</td>
+                                            <td align="center" >{$vo.id}</td>
                                             <td align="center">{$vo.tname}</td>
                                             <td align="center">{$vo.mname}</td>
                                             <td align="center">{$vo.pname}</td>
@@ -146,29 +141,6 @@
             });
         });
     }
-
-    $(function () {
-        $('#seBtn').click(function () {
-            var tname = $('#tname').val();
-            var create_time = $('#create_time').val();
-            $.ajax({
-               url: "{:url('teacher/lst')}",
-               type: 'get',
-               data: {tname:tname,create_time:create_time},
-               success:function (data) {
-                   // console.log(data)
-
-                   $("html").empty().append($(data))
-
-
-                   // location.reload();
-               }
-            });
-        });
-        laydate.render({
-            elem: '#create_time' //指定元素
-        });
-    });
 </script>
 
 

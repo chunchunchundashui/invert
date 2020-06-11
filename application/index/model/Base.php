@@ -33,7 +33,7 @@ class Base extends Model{
         if ($session['personnel_id'] == 1) {
           $session['teacher_id'] = $session['teacher_class'];
           unset($session['teacher_class']);
-          $session['comment'] = implode(',',$session['comment']);
+          $session['comment'] = implode('@',$session['comment']);
         }
         unset($session['teacher_class']);
         $ret = Db::name('comment')->insert($session);
@@ -199,8 +199,15 @@ class Base extends Model{
             ->field('t.id,t.topic,m.mname,m.id as mid')
             ->join('personnel p','t.personnel_id = p.id')
             ->join('manag m','t.manag_id = m.id')
+            ->order('id asc')
             ->select();
         foreach($res as $v) $reso[$v['mname']][] = $v;
+        foreach ($res as $key => $value) {
+            if ($value['topic'] == '') {
+                unset($res[$key]);
+            }
+        }
+        $reso['count'] = count($res);
         return $reso;
 
     }

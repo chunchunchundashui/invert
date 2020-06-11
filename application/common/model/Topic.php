@@ -7,13 +7,15 @@
  */
 namespace app\common\model;
 
+use think\Db;
+
 class Topic extends Base
 {
     //调查问题添加
     public function add($data)
     {
         $add = [
-            'topic|问题名称' => 'require|unique:topic',
+            // 'topic|问题名称' => 'require|unique:topic',
             'personnel_id|调查方式名称' => 'require',
             'manag_id|题目分类' => 'require',
         ];
@@ -45,19 +47,20 @@ class Topic extends Base
         }
         //接受上面的数据,在这儿进行如表查询
         $count = model('topic')->where($count_where)->count();
-        $data = model('topic')
+        $data = Db::name('topic')
             ->alias('a')
             ->field('a.*,b.name as pname,c.mname')
             ->order('id', 'asc')
             ->join('personnel b', "a.personnel_id = b.id")
             ->join('manag c', "a.manag_id = c.id")
+            //->group('pname')
             ->where($where)
-            ->paginate(32,$count, [
-//                query   在分页时候需要用到url额外参数
-                'query' => array('personnel' => $personnel,
-                ),
-            ]);
-        return $data;
+           //->select();
+           ->select();
+        $res = [];
+        foreach($data as $v) $res[$v['pname']][] = $v;
+      // $tt  = $this->paginate($res,20);
+        return $res;
     }
 
     //修改

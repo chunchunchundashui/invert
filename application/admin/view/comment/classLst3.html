@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <title>调查系统</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__admin__/style/bootstrap.css" rel="stylesheet">
+    <link href="__admin__/style/font-awesome.css" rel="stylesheet">
+    <link href="__admin__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__admin__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__admin__/style/demo.css" rel="stylesheet">
+    <link href="__admin__/style/typicons.css" rel="stylesheet">
+    <link href="__admin__/style/animate.css" rel="stylesheet">
+
+</head>
+<body>
+<!-- 头部 -->
+<div class="navbar">
+    {include file="public/head" /}
+</div>
+
+<!-- /头部 -->
+
+<div class="main-container container-fluid">
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        {include file="public/left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="{:url('index/index')}">系统</a>
+                    </li>
+                    <li>
+                    <a href="javascript:void(0)" id="back">班级评论列表</a></li>
+                    <li class="active">老师评论列表</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <div class="widget-body">
+                                <div class="flip-scroll">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            {volist name="manag" id='man'}
+
+                                            {if condition="$man['personnel_id'] eq 1"}
+                                            <th class="text-center">{$man.mname|subText=10}</th>
+                                            <!-- <th class="text-center"><a href="" title="">评论</a></th> -->
+                                            {/if}
+                                        {/volist}
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td align="center">1</td>
+                                            <td align="center">1</td>
+                                            <td align="center">1</td>
+                                            <td align="center">1</td>
+                                            <td align="center">1</td>
+                                            <td align="center">1</td>
+                                            <td align="center">1</td>
+                                            <td align="center">1</td>
+                                            <td align="center">1</td>
+                                            <td align="center">1</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="padding-top: 10px; text-align: right;">
+                                    <!--分页-->
+                                </div>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+</div>
+
+<!--Basic Scripts-->
+{include file="public/js" /}
+
+<script>
+    $('#back').click(function () {
+        window.history.go(-1);
+        // alert(132);return false;
+    });
+</script>
+
+
+</body></html>

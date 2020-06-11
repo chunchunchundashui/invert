@@ -40,9 +40,9 @@ class Teacher extends Base
     public function localByteacherByselect($data){
         $data = [
             'a.status'=>1,
-            'a.id'=>$data['id'],
+            'a.name'=>$data['id'],
         ];
-        $data = model('local')
+        $data = Db::name('local')
             ->field('a.*,b.tname as teacher_name')
             ->alias('a')
             ->join('teacher b', "a.teacher_id  = b.id and b.main_id = 2")
@@ -64,16 +64,13 @@ class Teacher extends Base
      * 班主任老师
      */
     public function local_teacher($id){
-        //$id为班级id
-        //$result = $this->table('teacher')->where('main_id!=1')->select();
-       // $teacher_id = Db::name('local_teacher')->field('teacher_id')->where('local_id',$id)->select();
         $data = model('local')
             ->field('a.*,b.tname as class_name')
             ->alias('a')
-            ->join('teacher b', "a.teacher_class  = b.id and b.main_id = 1")
-            ->where('a.id',$id)
+            ->join('teacher b', "a.teacher_class  = b.id")
+            ->where(['a.name'=>$id,'b.main_id'=>1])
+            ->group('a.teacher_class')
             ->select();
-            //->paginate(2);
         return $data;
     }
     /**

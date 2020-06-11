@@ -32,53 +32,6 @@ class Local extends Base {
        // echo $this->getLastSql();
        return $res;
     }
-    /*public function LocalByTeacherByAdd1($data){
-        $local_name = $data['name'];
-        $id = isset($data['id'])?$data['id']:'';
-        $teacher =  $data['teacher'];
-        unset($data['name']);
-        $local = $this->where(['name'=>$local_name])->find();
-        if($local){    //�����ѯ����ֵ,֤���Ѿ����
-            $local_teacher_select = [
-                'local_id'=>$local->id,
-                'teacher_id'=>$data['teacher']
-            ];
-            $local_teacher = $this->table('local_teacher')->where($local_teacher_select)->select();
-
-            if(!$local_teacher){   //�ж��м���Ƿ����,��������������
-                $result = Db::table('local_teacher')->insert($local_teacher_select);
-                return json_encode(true);
-            }else{
-               return json_encode(false);
-            }
-
-        }else{   //���û�������
-            $localAdd = $this->BaseByAdd_id(['name'=>$local_name,'id'=>$id]);
-
-            $local = $this->where(['name'=>$local_name])->find();
-            $local_teacher_shuju = [
-                    'local_id'=>$local->id,
-                    'teacher_id'=>$data['teacher'],
-                    'id'         => $data['local_teacher_id']
-                ];
-
-            if(empty($id)){
-                $local_teacher = Db::table('local_teacher')->insert($local_teacher_shuju);
-            }else{
-                $local_teacher = Db::table('local_teacher')->update($local_teacher_shuju);
-            }
-            if($local && $local_teacher){
-                return json_encode(true);
-              //  return true;
-            }else{
-                return json_encode(false);
-            }
-        }
-
-    }*/
-    /*
-     * �޸İ༶����
-     */
     public function LocalByTeacherByAdd($data){
 
         //array(4) { ["id"]=> string(0) "" ["local_teacher_id"]=> string(0) "" ["name"]=> string(6) "����" ["teacher"]=> string(1) "3" }
@@ -135,11 +88,21 @@ class Local extends Base {
      * ǰ̨��ѯ���а༶
      */
     public function BaseByYesAll($where='1=1'){
-        $where .= " and status=1";
+        $where .= " and a.status=1";
         $order =[
-            'id'=>'desc'
+            'a.id'=>'desc'
         ];
-        return $this->where($where)->order($order)->select();
+        $data = Db::name('local')
+          ->alias('a')
+          ->field('a.*,c.name as cname')
+          ->join('class c', "a.name = c.id")
+          ->where($where)
+          ->order($order)
+         // ->group('b.name')
+          ->group('a.name')
+          ->select();
+
+        return $data;
     }
     /*
      * ɾ���༶���м������

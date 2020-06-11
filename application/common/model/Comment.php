@@ -29,11 +29,12 @@ class Comment extends Base
     {
         $data = db('comment')
             ->alias('a')
-            ->field("a.*,b.tname,c.name as lname,d.name as pname")
+            ->field("a.*,b.tname,c.name as lname,d.name as pname,class.id,class.name as classroom")
             ->where("from_unixtime(a.create_time, '%Y-%m') = '{$data['create_time']}'")
             ->where('personnel_id',$data['personnel_id'])
             ->join('teacher b', 'a.teacher_id = b.id')
             ->join('local c', 'a.local_id = c.id')
+            ->join('class', 'c.name = class.id')
             ->join('personnel d', 'a.personnel_id = d.id')
           ->group('a.teacher_id')
           ->select();
@@ -51,24 +52,13 @@ class Comment extends Base
             ->where('teacher_id', $data['teacher_id'])
             ->where('personnel_id',$data['personnel_id'])
             ->group('a.comment')
-            ->paginate(15);
+            ->select();
+        // $file = position($data);
+        // dump($file);die;
+        // $file[] = position1($data);
         return $data;
     }
 
-    //模型下面的删除本月时间
-//    public function timedel($data)
-//    {
-//        $data = db('comment')
-//            ->field('id')
-//            ->where("from_unixtime(create_time, '%Y-%m') = '{$data['create_time']}'")
-//            ->where('personnel_id',$data['personnel_id'])
-//            ->delete();
-//        return $data;
-//    }
-
-  /*
-    * 公共删除(评论)
-*/
   public function timedel($data)
   {
     $personnel_id = "personnel_id = {$data['personnel_id']}";

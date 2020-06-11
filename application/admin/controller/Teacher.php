@@ -9,13 +9,14 @@
 namespace app\admin\controller;
 
 
+use think\Cache;
+
 class Teacher extends Base
 {
     protected $Controller = 'teacher';
     //列表
     public function lst()
     {
-
         $data = model('Teacher')->getAllData(1);
         $viewData = [
           'Teacher' => $data
@@ -23,7 +24,6 @@ class Teacher extends Base
         $this->assign($viewData);
         return view();
     }
-
 
     //添加
     public function add()
@@ -84,8 +84,16 @@ class Teacher extends Base
 
 //导出题
   public function expData(){
-      $class = input();
+    $class = input();
+    dump($class);die;
     action('admin/Download/out',['class'=>$class,'table_name'=>'tanswer']);
+  }
+  
+//  各部门的平均分下载
+  public function expDataPos()
+  {
+    $position = Cache::get('name');
+    action('admin/Download/position',['class'=>$position]);
   }
 
 }

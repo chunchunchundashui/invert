@@ -13,6 +13,7 @@ class Topic extends Validate
 {
     //调查问题添加验证场景
     public function sceneAdd(){
-        return $this->only(['name','personnel_id','manag_id']);
+    	// 'name',
+        return $this->only(['personnel_id','manag_id']);
     }
 }

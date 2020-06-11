@@ -12,20 +12,21 @@ class Comp extends Base
       if ($data['pid'] == 2) {
         $list['teacher_name'] = Db::name('local')
           ->alias('a')
-          ->field('a.*,b.tname')
+          ->field('a.*,b.tname,c.name')
           ->join('teacher b', 'a.teacher_id = b.id and b.main_id = 2')
+          ->join('class c', 'a.name = c.id')
           ->where('a.id',$data['tid'])->find();   //任课老师
         session('tid',$list['teacher_name']['teacher_id']);
       }else {
         $list['class_name'] = Db::name('local')
           ->alias('a')
-          ->field('a.*,b.tname')
+          ->field('a.*,b.tname,c.name')
           ->join('teacher b', 'a.teacher_class = b.id and b.main_id = 1')
-          ->where('a.id',$data['lid'])->find();   //班主任
-        session('cid',$list['class_name']['teacher_class']);
+          ->join('class c', 'a.name = c.id')
+          ->where('a.name',$data['lid'])->find();   //班主任
+          session('cid',$list['class_name']['teacher_class']);
       }
-
-    $list['local_name'] = Db::name('Local')->field('id,name')->where('id',$data['lid'])->find();
+    $list['local_name'] = Db::name('Local')->field('id,name')->where('name',$data['lid'])->find();
     $list['personnel'] = Db::name('Personnel')->field('name,id')->where('id',$data['pid'])->find();
     session('lid',$list['local_name']['id']);
     session('pid',$list['personnel']['id']);

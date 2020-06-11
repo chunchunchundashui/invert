@@ -16,7 +16,6 @@ use think\Route;
 Route::rule('admin/login/index','admin/login/index','get|post');
 
 
-
 return [
     '__pattern__' => [
         'name' => '\w+',

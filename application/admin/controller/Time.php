@@ -38,4 +38,16 @@ class Time extends Controller
       $this->error('删除失败');
     }
   }
+    // 查询各答题的考试时间
+    public function manag()
+    {
+        if (request()->isGet()) {
+            $manag = input('id');
+            $result = model('time')->manag($manag);
+            $this->assign([
+                'time'=>$result,
+            ]);
+        }
+        return $this->fetch('time/manag');
+    }
 }

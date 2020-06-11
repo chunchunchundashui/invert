@@ -9,13 +9,14 @@
 namespace app\admin\controller;
 
 
+use think\Cache;
 use think\Controller;
 
-class Achievement extends Controller
+class Achievement extends Base
 {
+  protected $Controller = 'Achievement';
   public function index(){
     $time = model('achievement')->timelist();
-//    dump($time);die;
     $this->assign([
       'time'=>$time
     ]);
@@ -26,18 +27,32 @@ class Achievement extends Controller
   public function teacher(){
     if (request()->isGet()){
       $data = input();
-      $list = model('achievement')->indexlist($data);
+      if($data['personnel_id'] == 4){
+       $list = $this->branch($data);
+       Cache::set('name',$list);  //将数据放到缓存当中，方便下载数据的获取
+      }else{
+         $list = model('achievement')->indexlist($data);
+         Cache::set('name',[$list, 'personnel_id' => $data['personnel_id']], 600);  //将数据放到缓存当中，方便下载数据的获取
+      }
+    
       $this->assign([
         'data'=>$data,
         'list'=>$list
       ]);
     }
-    if ($data['personnel_id'] ==3){
+    if ($data['personnel_id'] == 3){
       return view('time/position');
+    }elseif($data['personnel_id'] == 4){
+    	return view('achievement/manag');
     }
     return view('time/sort');
   }
-
+public function branch($data){
+      $list = model('achievement')->department($data);
+  	  return $list;
+  //return view('achievement/manag');
+	
+}
   //学生满意度调查对应的各部门评分
   public function company(){
     $list = model('achievement')->company();
@@ -51,10 +66,8 @@ class Achievement extends Controller
   public function sort(){
     if (request()->isGet()){
       $id = input();
-//            $download = model('');
-//            dump($id);die;
       $list = model('achievement')->Summation($id);
-
+      Cache::set('avg',[$list]);  //将数据放到缓存当中，方便下载数据的获取
       $this->assign([
         'id' => $id,
         'list'=>$list
@@ -62,6 +75,11 @@ class Achievement extends Controller
       return $this->fetch('achievement/copic');
     }
   }
+    //首页平均分
+    public function achieve(){
+        $name = Cache::get('name');
+        action('admin/Download/out',['avg'=>$name, 'id'=>'2']);
+    }
 
 //  单个删除分数
   public function commondel(){
@@ -74,4 +92,39 @@ class Achievement extends Controller
       $this->error('删除失败');
     }
   }
+//综合部门管理删除
+public function ManagDel(){
+      if (request()->isPost()){
+          $data = input('post.');
+          $list = model('achievement')->ManagDel($data);
+          if ($list ==true){
+              return $this->success('删除成功','achievement/index');
+          }else{
+              return $this->error('删除失败','achievement/index');
+          }
+      }
+}
+
+    //每个题的平均分
+    public function expData(){
+        $avg = Cache::get('avg');
+        action('admin/Download/out',['avg'=>$avg, 'id'=>'1']);
+    }
+    //首页平均分
+    public function department(){
+        $data = Cache::get('name');
+        action('admin/Download/department',[$data]);
+    }
+    // 各答题的平均分
+    public function manag(){
+        if (request()->isGet()) {
+            $time = input('');
+            $list = model('achievement')->manag($time);
+            Cache::set('name',$list);
+            $this->assign([
+                'list' => $list,
+            ]);
+        }
+        return view('achievement/manag');
+    }
 }

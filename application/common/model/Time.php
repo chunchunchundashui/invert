@@ -16,7 +16,7 @@ use think\Model;
 class Time  extends Controller
 {
     public function indexlist($personnel_id){
-      if ($personnel_id == 3){
+     if ($personnel_id == 3 ||$personnel_id ==4){
         $lsit = "personnel_id > 0";
       }else {
         $lsit = "personnel_id = {$personnel_id}";
@@ -26,11 +26,11 @@ class Time  extends Controller
           ->field("from_unixtime(time,'%Y-%m') as 'time'")
           ->group('time')
           ->select();
-      if ($list ==null){
+      if ($list == null){
             //如果数据库中不存在相关数据的话就返回空
             return '';
         }
-        foreach($list as $v) $res[$v['time']] = $v;
+      foreach($list as $v) $res[$v['time']] = $v;
 
       return $res;
     }
@@ -57,4 +57,21 @@ class Time  extends Controller
     $ret = $tree->delid($list,$model);
     return $ret;
   }
+    // 根据时间查询各大题
+    public function manag ($data)
+    {
+        $list = Db::name('tanswer')
+            ->alias('a')
+            ->field("a.topic_id, b.id as tid, c.id as cid, c.mname,from_unixtime(a.time,'%Y-%m') as 'time'")
+            ->join('topic b', 'a.topic_id = b.id')
+            ->join('manag c', 'b.id = c.id')
+            ->group('a.time')
+            ->select();
+      dump($list);die;
+        if ($list == null) {
+            return '';
+        }
+        foreach($list as $v) $res[$v['time']] = $v;
+        return $res;
+    }
 }

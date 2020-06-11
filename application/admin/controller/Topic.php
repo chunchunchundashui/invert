@@ -44,8 +44,6 @@ class Topic extends Base
         $this->assign($viewDate);
         return view();
     }
-
-
     //修改
     public function edit()
     {

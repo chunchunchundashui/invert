@@ -27,13 +27,4 @@ class Topic extends Base
            // echo $this->getLastSql();die;
             return $res;
         }
-        public function StaffBySelect($data=''){
-            dump($data);die;
-            $data['m.status'] = 1;
-            $res = $this->table('topic')->alias('t')->where($data)->
-                   join('manag m','m.id=t.manag_id')->field('t.id as id,t.topic as topic')->select();
-            return $res;
-        }
-
-
 }

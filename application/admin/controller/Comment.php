@@ -9,6 +9,10 @@
 namespace app\admin\controller;
 
 
+use PDO;
+use think\Cache;
+use think\Db;
+
 class Comment extends Base
 {
     protected $Controller = 'comment';
@@ -31,7 +35,7 @@ class Comment extends Base
         if (request()->isGet()) {
             $data = input('');
           $result = model('comment')->teacherLst($data);
-            $this->assign([
+          $this->assign([
                 'data'=>$data,
                 'teacherLst' => $result,
             ]);
@@ -44,9 +48,13 @@ class Comment extends Base
     {
         if (request()->isGet()) {
             $data = input();
+            $manag = db('manag')->field('id,mname,personnel_id')->where('status',1)->select();
+            // dump($man);die;
             $result = model('comment')->classLst($data);
+            // dump($result);die;
             $this->assign([
                 'comment' => $result,
+                'manag' => $manag,
             ]);
         }
         return view('comment/classLst');
@@ -79,4 +87,21 @@ class Comment extends Base
         }
       }
     }
+
+//  public function db()
+//  {
+//    $dbh = new PDO(
+//      'mysql:host=localhost;dbname=lianbiao','root','123456'
+//    );
+//    $sql = "update liuyan set Administrator_reply='52' where id=1";
+//    $db = $dbh -> exec($sql);
+//    dump($db);die;
+//}
+
+//    导出评论模块
+  public function expData()
+  {
+    $comment = input();
+    action('admin/Download/comment',['comment' => $comment, 'table_name' => 'comment']);
+}
 }

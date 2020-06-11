@@ -83,6 +83,7 @@
                                                     <i class="fa fa-edit"></i> 编辑
                                                 </a>
                                                 <a href="javascript:void(0)" class="btn btn-danger btn-sm shiny" onclick="dele(this,'{$vo.id}')">删除</a>
+                                                <a href="javascript:void(0)" class="btn btn-danger btn-sm shiny" onclick="upload(this,'{$vo.id}')">上传题库</a>
                                             </td>
                                         </tr>
                                         {/volist}
@@ -120,6 +121,22 @@
                 if(data.code == 1){
                     //删除成功 删除元素
                     $(obj).parents('table tr').remove();
+                    layer.msg(data.msg,{icon:1,time:1000});
+                }else{
+                    //删除失败
+                    layer.msg(data.msg,{icon:2,time:1000});
+                }
+            });
+        });
+        return false;
+    }
+    /*用户-删除*/
+    function upload(obj,id){
+        layer.confirm('确认上传吗？',function(index){
+            //发异步删除数据
+            $.post("{:url('personnel/upload')}",{id:id},function (data) {
+                if(data.code == 1){
+                    //删除成功 删除元素
                     layer.msg(data.msg,{icon:1,time:1000});
                 }else{
                     //删除失败

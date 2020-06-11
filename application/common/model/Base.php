@@ -39,7 +39,8 @@ class Base extends Model
             $data['status'] = 1;
             $data['create_time'] = time();
             unset($data['id']);
-        return $this->insert($data);
+
+      return $this->insert($data);
         // echo $this->getLastSql();die;
     }
 

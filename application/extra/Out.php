@@ -23,8 +23,7 @@ class Out
      */
    public function exportExcel($title=array(), $data=array(), $fileName='',$sheet='', $savePath='./', $isDown=false){
 
-
-     vendor("PHPExcel.PHPExcel.PHPExcel");
+       vendor("PHPExcel.PHPExcel.PHPExcel");
        vendor("PHPExcel.PHPExcel.Writer.IWriter");
        vendor("PHPExcel.PHPExcel.Writer.Abstract");
        vendor("PHPExcel.PHPExcel.Writer.Excel5");
@@ -51,6 +50,7 @@ class Out
             }
             $_row++;
         }
+
         //填写数据
         if($data){
             $i = 0;
@@ -69,33 +69,19 @@ class Out
             $fileName = uniqid(time(),true);
         }
 
-//        $objWrite = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
+        $objWrite = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
 
 
         if($isDown){   //网页下载
 //            header('pragma:public');
 //            header("Content-Disposition:attachment;filename=$fileName.xls");
 //            $objWrite->save('php://output');exit;
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
-//            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-//
-//            header('Content-Disposition: attachment;filename="'.$fileName.'.xlsx"');
-//
-//            header('Cache-Control: max-age=0');
-//            $objWrite->save('php://output');exit;
+            header('Content-Disposition: attachment;filename="'.$fileName.'.xlsx"');
 
-          header('Content-Type: application/vnd.ms-excel');
-
-          header('Content-Disposition: attachment;filename="links_out'.$fileName.'.xls"');
-
-          header('Cache-Control: max-age=0');
-
-          $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel5');
-
-          $objWriter->save('php://output');
-
-          exit;
-
+            header('Cache-Control: max-age=0');
+            $objWrite->save('php://output');exit;
 
         }
 

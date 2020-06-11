@@ -26,6 +26,7 @@ class Student extends Base
     }
 
     public function save(){
+
             if(request()->isPost()){
                 $data = input('post.');
                 //数据入库

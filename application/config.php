@@ -144,10 +144,10 @@ return [
 
     // 视图输出字符串内容替换
     'view_replace_str'       => [
-        '__admin__' => '/invest/public/static/admin',
-        '__js__' => '/invest/public/static/lib',
-        '__login__' => '/invest/public/static/login',
-        '__index__' => '/invest/public/static/index',
+        '__admin__' => 'http://localhost/invest/public/static/admin',
+        '__js__' => 'http://localhost/invest/public/static/lib',
+        '__login__' => 'http://localhost/invest/public/static/login',
+        '__index__' => 'http://localhost/invest/public/static/index',
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
@@ -217,6 +217,7 @@ return [
         'type'           => '',
         // 是否自动开启 SESSION
         'auto_start'     => true,
+
     ],
 
     // +----------------------------------------------------------------------
@@ -226,7 +227,7 @@ return [
         // cookie 名称前缀
         'prefix'    => '',
         // cookie 保存时间
-        'expire'    => 0,
+        'expire'    => 600,
         // cookie 保存路径
         'path'      => '/',
         // cookie 有效域名

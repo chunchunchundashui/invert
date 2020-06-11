@@ -47,18 +47,13 @@
 
             <!-- Page Body -->
             <div class="page-body">
-                <form id="form1" class="form-horizontal" role="form" action="" method="get">
+                <form id="form1" class="navbar-form navbar-right" method="get">
                     <div class="form-group">
-                          <span class="input-icon icon-right inverted">
-                          <input  type="text" id="personnel" name="personnel" value="{$Think.get.personnel}" placeholder="输入调查问题名称" style="width: 20%; margin-left: 572px;display: inline-block" class="form-control">
-                              <button type="button" id="seBtn" style="margin-bottom: 4px;" class="btn btn-default">
-                          <i class="glyphicon glyphicon-search block"></i>搜索
-                              </button>
-                          </span>
-
+                        <input type="text" class="form-control input-sm" id="search" name="personnel" value="{$Think.get.personnel}" placeholder="搜索" style="margin-left: 572px;display: inline-block"/>
                     </div>
-
-
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default btn-sm">搜索</button>
+                    </div>
                 </form>
 
                 <!--<span  class="input-icon inverted">-->
@@ -75,46 +70,45 @@
                                     <table class="table table-bordered table-hover">
                                         <thead class="">
                                         <tr>
-                                            <th class="text-center">ID</th>
+                                            <th class="text-center">调查分组</th>
                                             <th class="text-center">调查问题名称</th>
-                                            <th class="text-center">题目分类</th>
+                                            <th class="text-center" style="width: 150px; height: 1px">题目分类</th>
                                             <th class="text-center">题目</th>
-                                            <th class="text-center">更新时间</th>
+
                                             <th class="text-center">状态</th>
                                             <th class="text-center">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {volist name="topic" id="vo"}
+                                        {volist name="topic" id="vo" key="i"}
+                                        <td align="center">{$key}</td>
+                                        {volist name="vo" id="vi"}
                                         <tr>
-                                            <td align="center">{$vo.id}</td>
-                                            <td align="center">{$vo.pname}</td>
-                                            <td align="center">{$vo.mname}</td>
-                                            <td align="center">
-                                                {$vo.topic}
-                                            </td>
-                                            <td align="center">{$vo.update_time}</td>
-                                            <td align="center">
-                                                {if condition="$vo['status'] eq 1"}
+                                            <td align="center"></td>
+                                            <td align="center">{$vi.pname}</td>
+                                            <td align="center">{$vi.mname}</td>
+                                            <td align="center">{$vi.topic}</td>
+
+                                            <td align="center"> {if condition="$vi['status'] eq 1"}
                                                 <img src="__admin__/images/right.png" alt="">
                                                 {else /}
                                                 <img src="__admin__/images/wrong.png" alt="">
-                                                {/if}
-                                            </td>
+                                                {/if}</td>
                                             <td align="center">
-                                                <a href="{:url('topic/edit', array('id' => $vo['id']))}"  id="mainEdit" class="btn btn-primary btn-sm shiny">
+                                                <a href=""  id="mainEdit" class="btn btn-primary btn-sm shiny">
                                                     <i class="fa fa-edit"></i> 编辑
                                                 </a>
-                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'{$vo.id}')">删除</a>
+                                                <a href="javascript:void(0)" class="btn btn-danger brand_del btn-sm shiny" onclick="dele(this,'{$vi.id}')">删除</a>
                                             </td>
                                         </tr>
+                                        {/volist}
                                         {/volist}
                                         </tbody>
                                     </table>
                                 </div>
                                 <div style="padding-top: 10px; text-align: right;">
                                     <!--分页-->
-                                    {$topic->render()}
+
                                 </div>
                                 <div>
                                 </div>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>新华电脑学校问卷调查</title>
+    <link rel="stylesheet" href="__index__/css/check.css" />
+    <link rel="stylesheet" href="__index__/css/min.ui.css" />
+</head>
+<style>
+    .warning{
+        outline: 1px solid red!important;
+    }
+</style>
+<body>
+
+<div class="wrapper">
+    <header>
+        <div class="bg"></div>
+        <h3>{$list['personnel']['name']}调查问卷</h3>
+        {if condition="$list['personnel']['id'] eq 1 "}
+        <p class="title2">班级:{$list['class_name']['name']}:{$list['class_name']['tname']}</p>
+        {else /}
+        <p class="title2">班级:{$list['teacher_name']['name']}:{$list['teacher_name']['tname']}</p>
+        {/if}
+        <h6>您好:</h6>
+        <p class="descrip">
+            欢迎参加学生满意度调查工作!
+            此次调查是本校为了学生拥有更好的在校生活而专门设计的
+            希望你抽出一点时间积极配合我们的调查工作,谢谢你的参与
+        </p>
+        <h6>说明:</h6>
+        <p class="descrip">
+            本次调查采用匿名形式,我们将严格保密你的信息
+        </p>
+    </header>
+    {if condition="$data['pid'] eq 2"}
+        {include file="public/Teacher" /}
+    {else /}
+        {include file="public/Student" /}
+    {/if}
+</div>
+<script src="__index__/js/jquery-3.4.1.js"></script>
+<script src="__index__/js/min.ui.js"></script>
+<script src="__js__/layer/layer.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $('#login').one('click',function () {
+            var arr = [];  //初始化选择和没有选择的题目，为判断用户答题数
+            var myxuanti = [];  //初始化用户保存用户那个题目没有被选中的题目编号
+            $.each($(".radio_question"), function(index,val) {
+                if($(this).find("input[type=radio]:checked").val()){
+                    arr.push(1);   //1：代表选中的题目
+                }else{
+                    arr.push(2);   //2：代表为选中的题目
+                    myxuanti.push($(this).attr("id").substr(3)); //获取没有被选中的题目，并且截取题目编号保存到数组中
+                }
+            });
+            if($("#intro").val() == ''){
+                layer.msg("其他意见最少6个字符，请填写之后在进行提交！",{icon:2,time:2000});
+                return false;
+            }
+            var result = $.inArray(2, arr);    //判断数组中是否存在某个元素
+            if (result >= 0) {  //提示那个没有被选中
+                layer.msg("您有以下题目："+myxuanti.join(",")+'没有选择，请选择之后在进行提交！',{icon:2,time:2000});
+                //console.log("您有以下题目："+myxuanti.join(",")+'没有选择，请选择之后在进行提交！');
+                return false;
+            }else{   //这个else里面发送ajax异步请求
+                $.ajax({
+                    url:"{:url('comp/add')}",
+                    type:'post',
+                    data:$('form').serialize(),
+                    dataType:'json',
+                    success: function (data) {
+                        //循环使用is进行判断
+                        //do something
+                        if (data.code == 1) {
+                            layer.msg(data.msg,{icon:1,time:500}, function () {
+                                location.href = data.url;
+                            });
+                        }else {
+                            layer.msg(data.msg,{icon:2,time:1000});
+                            return false;
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

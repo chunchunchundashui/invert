@@ -61,9 +61,14 @@
                 <div id="horizontal-form">
                     <form class="form-horizontal" role="form" action="" method="post">
                         <div class="form-group">
-                            <label  class="col-sm-2 control-label no-padding-right" >班级名称</label>
-                            <div class="col-sm-6">
-                                <input class="form-control"  name="name" required="" placeholder="请输入班级名称" type="text">
+                            <label for="name" class="col-sm-2 control-label no-padding-right">添加班级</label>
+                            <div class="col-sm-6" >
+                                <select id="class" name="name" class="form-control">
+                                    <option value="">----请选择----</option>
+                                    {volist name="localClass" id="vo"}
+                                    <option value="{$vo.id}" >{$vo.name}</option>
+                                    {/volist}
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -82,8 +87,8 @@
                         <div class="form-group">
                         <label for="cateid" class="col-sm-2 control-label no-padding-right">班主任</label>
                         <div class="col-sm-6">
-                            <select id="cateid" name="teacher_class" class="form-control">
-                                <option value="">----请选择----</option>
+                            <select id="teacher_class" name="teacher_class" class="form-control">
+                                <option value="">--请选择--</option>
                                 {volist name="teacher" id="vo"}
                                 {if condition="$vo['main_id'] eq 1"}
                                 <option value="{$vo.id}" >{$vo.tname}</option>
@@ -115,6 +120,9 @@
 	    <!--Basic Scripts-->
     {include file="public/js" /}
     <script>
+
+
+
         $(function () {
             $('#addBtn').click(function () {
                 $.ajax({

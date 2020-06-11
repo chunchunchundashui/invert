@@ -9,6 +9,8 @@
 namespace app\admin\controller;
 
 
+use think\Db;
+
 class Local extends Base
 {
     protected $Controller = 'local';
@@ -26,17 +28,36 @@ class Local extends Base
     //添加
     public function add()
     {
-        if (request()->isAjax()) {
+        if (request()->isPost()) {
             $data = input('post.');
-            $result = model('Local')->add($data);
-            if ($result == 1) {
-                $this->success('班级添加成功!', 'local/lst');
+            $teacher = db('local')->where(['status'=>1,'name' =>$data['name']])->find();
+            if (!empty($teacher)){
+                if ($teacher['teacher_class'] != $data['teacher_class']){
+                    return $this->error('该班级已存在班主任','local/index');
+                }else{
+                    $teachers = db('local')->where(['status'=>1,'name' =>$data['name'],'teacher_id'=>$data['teacher_id']])->find();
+                    if (!empty($teachers)){
+                        return $this->error('该班级已存在该老师','local/index');
+                    }else{
+                        $result = model('Local')->add($data);
+                        if ($result == 1) {
+                            $this->success('班级添加成功!', 'local/lst');
+                        }else {
+                            $this->error($result);
+                    }
+                    }
+                }
             }else {
-                $this->error($result);
+                $result = model('Local')->add($data);
+                if ($result == 1) {
+                    $this->success('班级添加成功!', 'local/lst');
+                } else {
+                    $this->error($result);
+                }
             }
         }
-        $localClass = db('local')->field('id, teacher_id')->select();
-        $teacher = db('teacher')->field('tname,main_id, id')->where('status = 1')->select();
+        $localClass = db('class')->alias('a')->select();
+        $teacher = db('teacher')->field('tname,main_id, id')->where('status =1')->select();
         $main = db('main')->field('id,mname')->where('status = 1')->find();
         $viewDate = [
             'localClass' => $localClass,
